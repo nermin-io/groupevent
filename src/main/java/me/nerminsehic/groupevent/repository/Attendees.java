@@ -1,0 +1,12 @@
+package me.nerminsehic.groupevent.repository;
+
+import me.nerminsehic.groupevent.entity.Attendee;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.Optional;
+import java.util.UUID;
+
+public interface Attendees extends JpaRepository<Attendee, UUID> {
+
+    Optional<Attendee> findByEmailAddress(String emailAddress);
+}
