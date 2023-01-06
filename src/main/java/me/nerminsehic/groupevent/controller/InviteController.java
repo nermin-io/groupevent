@@ -7,6 +7,7 @@ import me.nerminsehic.groupevent.entity.Invite;
 import me.nerminsehic.groupevent.service.InviteService;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -29,7 +30,7 @@ public class InviteController {
 
     @PatchMapping("{eventId}")
     @ResponseStatus(HttpStatus.OK)
-    public String respondInvite(@PathVariable UUID attendeeId, @PathVariable UUID eventId, @RequestBody InviteResponseDto responseDto) {
+    public String respondInvite(@PathVariable UUID attendeeId, @PathVariable UUID eventId, @Validated @RequestBody InviteResponseDto responseDto) {
 
         inviteService.respondInvite(
                 eventId,

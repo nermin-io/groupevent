@@ -9,6 +9,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.data.util.Pair;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,13 +33,13 @@ public class OrganiserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public OrganiserDto createOrganiser(@RequestBody OrganiserDto organiserDto) {
+    public OrganiserDto createOrganiser(@Validated @RequestBody OrganiserDto organiserDto) {
         Organiser organiser = convertToEntity(organiserDto);
         return convertToDto(organiserService.create(organiser));
     }
 
     @PostMapping("find")
-    public ResponseEntity<OrganiserDto> findOrCreateOrganiser(@RequestBody OrganiserDto reqOrganiserDto) {
+    public ResponseEntity<OrganiserDto> findOrCreateOrganiser(@Validated @RequestBody OrganiserDto reqOrganiserDto) {
         Organiser organiser = convertToEntity(reqOrganiserDto);
         Pair<Organiser, Boolean> result = organiserService.findOrCreateOrganiser(organiser);
 
@@ -78,7 +79,7 @@ public class OrganiserController {
 
     @PutMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
-    public OrganiserDto updateOrganiserById(@PathVariable UUID id, @RequestBody OrganiserDto organiserDto) {
+    public OrganiserDto updateOrganiserById(@PathVariable UUID id, @Validated @RequestBody OrganiserDto organiserDto) {
         Organiser organiser = convertToEntity(organiserDto);
         return convertToDto(organiserService.updateById(id, organiser));
     }

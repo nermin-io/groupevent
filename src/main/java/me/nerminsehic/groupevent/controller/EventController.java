@@ -10,6 +10,7 @@ import me.nerminsehic.groupevent.service.AttendeeService;
 import me.nerminsehic.groupevent.service.EventService;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,7 +36,7 @@ public class EventController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public EventDto createEvent(@PathVariable UUID organiserId, @RequestBody EventDto eventDto) {
+    public EventDto createEvent(@PathVariable UUID organiserId, @Validated @RequestBody EventDto eventDto) {
         Event event = convertToEntity(eventDto);
         Set<Attendee> attendees = attendeeService.findOrCreateAttendeesByEmail(eventDto.getAttendees());
 
@@ -69,7 +70,7 @@ public class EventController {
 
     @PutMapping("{eventId}")
     @ResponseStatus(HttpStatus.OK)
-    public EventDto updateEventById(@PathVariable UUID organiserId, @PathVariable UUID eventId, @RequestBody EventDto eventDto) {
+    public EventDto updateEventById(@PathVariable UUID organiserId, @PathVariable UUID eventId, @Validated @RequestBody EventDto eventDto) {
         Event event = convertToEntity(eventDto);
 
         return convertToDto(eventService.updateById(organiserId, eventId, event));
@@ -77,7 +78,7 @@ public class EventController {
 
     @PatchMapping("{eventId}/cancel")
     @ResponseStatus(HttpStatus.OK)
-    public EventDto cancelEvent(@PathVariable UUID organiserId, @PathVariable UUID eventId, @RequestBody EventCancelDto eventCancelDto) {
+    public EventDto cancelEvent(@PathVariable UUID organiserId, @PathVariable UUID eventId, @Validated @RequestBody EventCancelDto eventCancelDto) {
         Event cancelledEvent = eventService.cancel(organiserId, eventId, eventCancelDto.getMessage());
 
         return convertToDto(cancelledEvent);
@@ -85,7 +86,7 @@ public class EventController {
 
     @PatchMapping("{eventId}/reschedule")
     @ResponseStatus(HttpStatus.OK)
-    public EventDto rescheduleEvent(@PathVariable UUID organiserId, @PathVariable UUID eventId, @RequestBody EventDto eventDto) {
+    public EventDto rescheduleEvent(@PathVariable UUID organiserId, @PathVariable UUID eventId, @Validated @RequestBody EventDto eventDto) {
         Event event = convertToEntity(eventDto);
         return convertToDto(eventService.reschedule(organiserId, eventId, event));
     }

@@ -1,6 +1,8 @@
 package me.nerminsehic.groupevent.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -16,18 +18,22 @@ public class AddressDto {
     @JsonProperty("id")
     private UUID id;
 
+    @NotBlank(message = "required field")
     @JsonProperty("address")
     private String address;
 
     @JsonProperty("address2")
     private String address2;
 
+    @NotBlank(message = "required field")
     @JsonProperty("city")
     private String city;
 
+    @NotBlank(message = "required field")
     @JsonProperty("state")
     private String state;
 
+    @NotBlank(message = "required field")
     @JsonProperty("post_code")
     private String postCode;
 

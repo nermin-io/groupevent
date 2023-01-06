@@ -7,6 +7,7 @@ import me.nerminsehic.groupevent.exception.NotFoundException;
 import me.nerminsehic.groupevent.service.AddressService;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,7 +31,7 @@ public class AddressController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public AddressDto createAddress(@PathVariable UUID organiserId, @RequestBody AddressDto addressDto) {
+    public AddressDto createAddress(@PathVariable UUID organiserId, @Validated @RequestBody AddressDto addressDto) {
         Address address = convertToEntity(addressDto);
 
         return convertToDto(addressService.create(organiserId, address));
@@ -63,7 +64,7 @@ public class AddressController {
 
     @PutMapping("{addressId}")
     @ResponseStatus(HttpStatus.OK)
-    public AddressDto updateAddressById(@PathVariable UUID organiserId, @PathVariable UUID addressId, @RequestBody AddressDto addressDto) {
+    public AddressDto updateAddressById(@PathVariable UUID organiserId, @PathVariable UUID addressId, @Validated @RequestBody AddressDto addressDto) {
         Address address = convertToEntity(addressDto);
         return convertToDto(addressService.updateById(organiserId, addressId, address));
     }
