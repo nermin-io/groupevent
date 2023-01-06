@@ -1,5 +1,6 @@
 package me.nerminsehic.groupevent.controller;
 
+import lombok.RequiredArgsConstructor;
 import me.nerminsehic.groupevent.entity.MagicLink;
 import me.nerminsehic.groupevent.exception.LinkException;
 import me.nerminsehic.groupevent.service.MagicLinkService;
@@ -10,13 +11,10 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("api/v1/organisers/{organiserId}/links")
+@RequiredArgsConstructor
 public class MagicLinkController {
 
     private final MagicLinkService linkService;
-
-    public MagicLinkController(MagicLinkService linkService) {
-        this.linkService = linkService;
-    }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)

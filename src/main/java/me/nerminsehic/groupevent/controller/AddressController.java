@@ -1,5 +1,6 @@
 package me.nerminsehic.groupevent.controller;
 
+import lombok.RequiredArgsConstructor;
 import me.nerminsehic.groupevent.dto.AddressDto;
 import me.nerminsehic.groupevent.entity.Address;
 import me.nerminsehic.groupevent.exception.NotFoundException;
@@ -13,6 +14,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("api/v1/organisers/{organiserId}/addresses")
+@RequiredArgsConstructor
 public class AddressController {
 
     private final AddressService addressService;
@@ -24,11 +26,6 @@ public class AddressController {
 
     private Address convertToEntity(AddressDto addressDto) {
         return modelMapper.map(addressDto, Address.class);
-    }
-
-    public AddressController(AddressService addressService, ModelMapper modelMapper) {
-        this.addressService = addressService;
-        this.modelMapper = modelMapper;
     }
 
     @PostMapping

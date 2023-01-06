@@ -1,5 +1,6 @@
 package me.nerminsehic.groupevent.service;
 
+import lombok.RequiredArgsConstructor;
 import me.nerminsehic.groupevent.entity.Address;
 import me.nerminsehic.groupevent.entity.Organiser;
 import me.nerminsehic.groupevent.exception.IllegalOperationException;
@@ -13,15 +14,11 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class AddressServiceImpl implements AddressService {
 
     private final OrganiserService organiserService;
     private final Addresses addresses;
-
-    public AddressServiceImpl(OrganiserService organiserService, Addresses addresses) {
-        this.organiserService = organiserService;
-        this.addresses = addresses;
-    }
 
     @Override
     public Optional<Address> findById(UUID organiserId, UUID addressId) {

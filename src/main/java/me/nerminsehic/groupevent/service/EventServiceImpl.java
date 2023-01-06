@@ -1,5 +1,7 @@
 package me.nerminsehic.groupevent.service;
 
+import jdk.jfr.Registered;
+import lombok.RequiredArgsConstructor;
 import me.nerminsehic.groupevent.entity.*;
 import me.nerminsehic.groupevent.exception.IllegalOperationException;
 import me.nerminsehic.groupevent.exception.NotFoundException;
@@ -13,6 +15,7 @@ import java.util.Set;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class EventServiceImpl implements EventService {
 
     private final Events events;
@@ -20,14 +23,6 @@ public class EventServiceImpl implements EventService {
     private final AddressService addressService;
     private final AttendeeService attendeeService;
     private final MailService mailService;
-
-    public EventServiceImpl(Events events, OrganiserService organiserService, AddressService addressService, AttendeeService attendeeService, MailService mailService) {
-        this.events = events;
-        this.organiserService = organiserService;
-        this.addressService = addressService;
-        this.attendeeService = attendeeService;
-        this.mailService = mailService;
-    }
 
     @Override
     public Optional<Event> findById(UUID organiserId, UUID eventId) {

@@ -1,5 +1,6 @@
 package me.nerminsehic.groupevent.service;
 
+import lombok.RequiredArgsConstructor;
 import me.nerminsehic.groupevent.entity.Organiser;
 import me.nerminsehic.groupevent.exception.NotFoundException;
 import me.nerminsehic.groupevent.exception.UniqueConstraintException;
@@ -13,13 +14,10 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class OrganiserServiceImpl implements OrganiserService {
 
     private final Organisers organisers;
-
-    public OrganiserServiceImpl(Organisers organisers) {
-        this.organisers = organisers;
-    }
 
     @Override
     public Optional<Organiser> findById(UUID id) {

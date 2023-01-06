@@ -1,5 +1,6 @@
 package me.nerminsehic.groupevent.controller;
 
+import lombok.RequiredArgsConstructor;
 import me.nerminsehic.groupevent.dto.EventCancelDto;
 import me.nerminsehic.groupevent.dto.EventDto;
 import me.nerminsehic.groupevent.entity.Attendee;
@@ -17,6 +18,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("api/v1/organisers/{organiserId}/events")
+@RequiredArgsConstructor
 public class EventController {
 
     private final EventService eventService;
@@ -29,12 +31,6 @@ public class EventController {
 
     private EventDto convertToDto(Event event) {
         return modelMapper.map(event, EventDto.class);
-    }
-
-    public EventController(EventService eventService, AttendeeService attendeeService, ModelMapper modelMapper) {
-        this.eventService = eventService;
-        this.attendeeService = attendeeService;
-        this.modelMapper = modelMapper;
     }
 
     @PostMapping

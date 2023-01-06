@@ -1,5 +1,6 @@
 package me.nerminsehic.groupevent.service;
 
+import lombok.RequiredArgsConstructor;
 import me.nerminsehic.groupevent.entity.LinkStatus;
 import me.nerminsehic.groupevent.entity.MagicLink;
 import me.nerminsehic.groupevent.entity.Organiser;
@@ -12,17 +13,12 @@ import java.time.Instant;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class MagicLinkServiceImpl implements MagicLinkService {
 
     private final MagicLinks magicLinks;
     private final OrganiserService organiserService;
     private final MailService mailService;
-
-    public MagicLinkServiceImpl(MagicLinks magicLinks, OrganiserService organiserService, MailService mailService) {
-        this.magicLinks = magicLinks;
-        this.organiserService = organiserService;
-        this.mailService = mailService;
-    }
 
     @Override
     public MagicLink create(UUID organiserId) {

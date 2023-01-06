@@ -1,5 +1,6 @@
 package me.nerminsehic.groupevent.service;
 
+import lombok.RequiredArgsConstructor;
 import me.nerminsehic.groupevent.entity.*;
 import me.nerminsehic.groupevent.entity.key.InviteCompositeKey;
 import me.nerminsehic.groupevent.exception.IllegalOperationException;
@@ -11,17 +12,12 @@ import java.time.Instant;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class InviteServiceImpl implements InviteService {
 
     private final Invites invites;
     private final AttendeeService attendeeService;
     private final MailService mailService;
-
-    public InviteServiceImpl(Invites invites, AttendeeService attendeeService, MailService mailService) {
-        this.invites = invites;
-        this.attendeeService = attendeeService;
-        this.mailService = mailService;
-    }
 
     @Override
     public Invite respondInvite(UUID eventId, UUID attendeeId, String firstName, String lastName, InviteResponse response, String message) {

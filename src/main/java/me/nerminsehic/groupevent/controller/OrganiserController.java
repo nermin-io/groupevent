@@ -1,5 +1,6 @@
 package me.nerminsehic.groupevent.controller;
 
+import lombok.RequiredArgsConstructor;
 import me.nerminsehic.groupevent.dto.OrganiserDto;
 import me.nerminsehic.groupevent.entity.Organiser;
 import me.nerminsehic.groupevent.exception.NotFoundException;
@@ -15,6 +16,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("api/v1/organisers")
+@RequiredArgsConstructor
 public class OrganiserController {
 
     private final OrganiserService organiserService;
@@ -26,11 +28,6 @@ public class OrganiserController {
 
     private OrganiserDto convertToDto(Organiser organiser) {
         return modelMapper.map(organiser, OrganiserDto.class);
-    }
-
-    public OrganiserController(OrganiserService organiserService, ModelMapper modelMapper) {
-        this.organiserService = organiserService;
-        this.modelMapper = modelMapper;
     }
 
     @PostMapping

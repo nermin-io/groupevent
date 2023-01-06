@@ -1,5 +1,6 @@
 package me.nerminsehic.groupevent.controller;
 
+import lombok.RequiredArgsConstructor;
 import me.nerminsehic.groupevent.dto.InviteDto;
 import me.nerminsehic.groupevent.dto.InviteResponseDto;
 import me.nerminsehic.groupevent.entity.Invite;
@@ -12,15 +13,11 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("api/v1/attendees/{attendeeId}/invites")
+@RequiredArgsConstructor
 public class InviteController {
 
     private final InviteService inviteService;
     private final ModelMapper modelMapper;
-
-    public InviteController(InviteService inviteService, ModelMapper modelMapper) {
-        this.inviteService = inviteService;
-        this.modelMapper = modelMapper;
-    }
 
     private Invite convertToEntity(InviteDto inviteDto) {
         return modelMapper.map(inviteDto, Invite.class);

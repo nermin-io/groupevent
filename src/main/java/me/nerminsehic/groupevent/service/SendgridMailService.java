@@ -9,6 +9,7 @@ import com.sendgrid.helpers.mail.objects.Email;
 import com.sendgrid.helpers.mail.objects.MailSettings;
 import com.sendgrid.helpers.mail.objects.Personalization;
 import com.sendgrid.helpers.mail.objects.TrackingSettings;
+import lombok.RequiredArgsConstructor;
 import me.nerminsehic.groupevent.dto.*;
 import me.nerminsehic.groupevent.entity.*;
 import me.nerminsehic.groupevent.exception.SendMailException;
@@ -24,6 +25,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class SendgridMailService implements MailService {
 
     private final SendGrid sendgrid;
@@ -49,14 +51,6 @@ public class SendgridMailService implements MailService {
 
     @Value("${sendgrid.template.event-cancelled-template-id}")
     private String eventCancelledTemplateId;
-
-    public SendgridMailService(SendGrid sendgrid, MailSettings mailSettings, TrackingSettings trackingSettings, StaticMaps maps, Directions directions) {
-        this.sendgrid = sendgrid;
-        this.mailSettings = mailSettings;
-        this.trackingSettings = trackingSettings;
-        this.maps = maps;
-        this.directions = directions;
-    }
 
     @Override
     public boolean sendMagicLink(Organiser organiser, MagicLink link) {

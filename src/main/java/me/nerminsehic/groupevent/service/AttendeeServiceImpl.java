@@ -1,6 +1,7 @@
 package me.nerminsehic.groupevent.service;
 
 import com.google.common.collect.Sets;
+import lombok.RequiredArgsConstructor;
 import me.nerminsehic.groupevent.entity.Attendee;
 import me.nerminsehic.groupevent.exception.NotFoundException;
 import me.nerminsehic.groupevent.repository.Attendees;
@@ -14,13 +15,10 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class AttendeeServiceImpl implements AttendeeService {
 
     private final Attendees attendees;
-
-    public AttendeeServiceImpl(Attendees attendees) {
-        this.attendees = attendees;
-    }
 
     @Override
     public Optional<Attendee> findById(UUID id) {
