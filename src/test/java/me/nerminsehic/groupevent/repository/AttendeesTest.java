@@ -1,7 +1,6 @@
 package me.nerminsehic.groupevent.repository;
 
 import me.nerminsehic.groupevent.entity.Attendee;
-import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +23,7 @@ class AttendeesTest {
     }
 
     @Test
-    void itShouldFindAttendeeByEmailAddress() {
+    void itShould_FindAttendeeByEmailAddress() {
         // given
         String emailAddress = "test.test@email.com";
         Attendee attendee = underTest.save(new Attendee(
@@ -39,7 +38,7 @@ class AttendeesTest {
     }
 
     @Test
-    void itShouldNotFindAttendeeByNonExistingEmailAddress() {
+    void itShouldNot_FindAttendeeByEmailAddress_WhenEmailNotExists() {
         // given
         String nonExistingEmailAddress = "test.test@email.com";
 

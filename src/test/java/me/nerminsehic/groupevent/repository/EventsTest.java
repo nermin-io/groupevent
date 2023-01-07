@@ -1,7 +1,6 @@
 package me.nerminsehic.groupevent.repository;
 
 import com.github.javafaker.Faker;
-import me.nerminsehic.groupevent.TestingConfig;
 import me.nerminsehic.groupevent.entity.Address;
 import me.nerminsehic.groupevent.entity.Event;
 import me.nerminsehic.groupevent.entity.Organiser;
@@ -9,7 +8,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.Import;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -20,7 +18,6 @@ import java.util.Optional;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @DataJpaTest
-@Import(TestingConfig.class)
 class EventsTest {
 
     @Autowired
@@ -32,8 +29,7 @@ class EventsTest {
     @Autowired
     private Addresses addresses;
 
-    @Autowired
-    private Faker faker;
+    private final Faker faker = new Faker();
 
     @AfterEach
     void tearDown() {
@@ -43,7 +39,7 @@ class EventsTest {
     }
 
     @Test
-    void itShouldFindEventByIdAndOrganiser() {
+    void itShould_FindEventByIdAndOrganiser() {
         // given
         Organiser organiser = createTestOrganiser();
         Event event = createTestEvent(organiser);
@@ -57,7 +53,7 @@ class EventsTest {
     }
 
     @Test
-    void itShouldNotFindEventByIdAndInvalidOrganiser() {
+    void itShouldNot_FindEventByIdAndOrganiser_WhenInvalidOrganiserProvided() {
         // given
         Organiser expectedOrganiser = createTestOrganiser();
         Organiser invalidOrganiser = createTestOrganiser();
@@ -71,7 +67,7 @@ class EventsTest {
     }
 
     @Test
-    void itShouldFindAllEventsByOrganiser() {
+    void itShould_FindAllEventsByOrganiser() {
         // given
         Organiser organiser = createTestOrganiser();
         Event event1 = createTestEvent(organiser);

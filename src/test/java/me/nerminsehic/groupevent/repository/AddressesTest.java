@@ -1,14 +1,12 @@
 package me.nerminsehic.groupevent.repository;
 
 import com.github.javafaker.Faker;
-import me.nerminsehic.groupevent.TestingConfig;
 import me.nerminsehic.groupevent.entity.Address;
 import me.nerminsehic.groupevent.entity.Organiser;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.Import;
 
 
 import java.util.List;
@@ -17,7 +15,6 @@ import java.util.Optional;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @DataJpaTest
-@Import(TestingConfig.class)
 class AddressesTest {
 
     @Autowired
@@ -26,8 +23,7 @@ class AddressesTest {
     @Autowired
     private Organisers organisers;
 
-    @Autowired
-    private Faker faker;
+    private final Faker faker = new Faker();
 
     @AfterEach
     void tearDown() {
@@ -36,7 +32,7 @@ class AddressesTest {
     }
 
     @Test
-    void itShouldFindAddressByIdAndOrganiser() {
+    void itShould_FindAddressByIdAndOrganiser() {
         // given
         Organiser organiser = createTestOrganiser();
         Address address = createTestAddress(organiser);
@@ -50,7 +46,7 @@ class AddressesTest {
     }
 
     @Test
-    void itShouldNotFindAddressByIdAndInvalidOrganiser() {
+    void itShouldNot_FindAddressByIdAndOrganiser_WhenInvalidOrganiserProvided() {
         // given
         Organiser expectedOrganiser = createTestOrganiser();
         Organiser invalidOrganiser = createTestOrganiser();
@@ -64,7 +60,7 @@ class AddressesTest {
     }
 
     @Test
-    void itShouldFindAllAddressesByOrganiser() {
+    void itShould_FindAllAddressesByOrganiser() {
         // given
         Organiser organiser = createTestOrganiser();
         Address address1 = createTestAddress(organiser);
@@ -79,7 +75,7 @@ class AddressesTest {
     }
 
     @Test
-    void itShouldFindAddressByOrganiserAndAddressAndStateAndPostCode() {
+    void itShould_FindAddressByOrganiserAndAddressAndStateAndPostCode() {
         // given
         Organiser organiser = createTestOrganiser();
 
@@ -104,7 +100,7 @@ class AddressesTest {
     }
 
     @Test
-    void itShouldNotFindAddressByOrganiserAndInvalidAddressAndStateAndPostCode() {
+    void itShouldNot_FindAddressByOrganiserAndAddressAndStateAndPostCode_WhenInvalidAddressProvided() {
         // given
         Organiser organiser = createTestOrganiser();
         Address address = createTestAddress(organiser);

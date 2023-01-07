@@ -1,23 +1,18 @@
 package me.nerminsehic.groupevent.repository;
 
 import com.github.javafaker.Faker;
-import me.nerminsehic.groupevent.TestingConfig;
 import me.nerminsehic.groupevent.entity.MagicLink;
 import me.nerminsehic.groupevent.entity.Organiser;
-import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.Import;
 
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
-@Import(TestingConfig.class)
 class MagicLinksTest {
 
     @Autowired
@@ -26,8 +21,7 @@ class MagicLinksTest {
     @Autowired
     private Organisers organisers;
 
-    @Autowired
-    private Faker faker;
+    private final Faker faker = new Faker();
 
     @AfterEach
     void tearDown() {
@@ -36,7 +30,7 @@ class MagicLinksTest {
     }
 
     @Test
-    void itShouldFindLinkByIdAndOrganiser() {
+    void itShould_FindLinkByIdAndOrganiser() {
         // given
         Organiser organiser = createTestOrganiser();
         MagicLink link = createTestLink(organiser);
@@ -50,7 +44,7 @@ class MagicLinksTest {
     }
 
     @Test
-    void itShouldNotFindLinkByIdAndInvalidOrganiser() {
+    void itShouldNot_FindLinkByIdAndOrganiser_WhenInvalidOrganiserProvided() {
         // given
         Organiser expectedOrganiser = createTestOrganiser();
         Organiser invalidOrganiser = createTestOrganiser();

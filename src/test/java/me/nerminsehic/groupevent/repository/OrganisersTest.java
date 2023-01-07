@@ -1,29 +1,23 @@
 package me.nerminsehic.groupevent.repository;
 
 import com.github.javafaker.Faker;
-import me.nerminsehic.groupevent.TestingConfig;
 import me.nerminsehic.groupevent.entity.Organiser;
-import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.Import;
 
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
-@Import(TestingConfig.class)
 class OrganisersTest {
 
     @Autowired
     private Organisers underTest;
 
-    @Autowired
-    private Faker faker;
+    private final Faker faker = new Faker();
 
     @AfterEach
     void tearDown() {
@@ -31,7 +25,7 @@ class OrganisersTest {
     }
 
     @Test
-    void itShouldFindOrganiserByEmailAddress() {
+    void itShould_FindOrganiserByEmailAddress() {
         // given
         String emailAddress = faker.internet().emailAddress();
         Organiser organiser = underTest.save(new Organiser(
@@ -49,7 +43,7 @@ class OrganisersTest {
     }
 
     @Test
-    void itShouldNotFindOrganiserByNonExistingEmailAddress() {
+    void itShouldNot_FindOrganiserByEmailAddress_WhenEmailNotExists() {
         // given
         String nonExistingEmail = faker.internet().emailAddress();
 
