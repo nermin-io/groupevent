@@ -21,7 +21,9 @@ import java.util.UUID;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
@@ -98,6 +100,8 @@ class AttendeeServiceImplTest {
         assertThatThrownBy(() -> underTest.create(attendee))
                 .isInstanceOf(UniqueConstraintException.class)
                 .hasMessageContaining("already exists");
+
+        verify(attendees, never()).save(any());
     }
 
     @Test
@@ -203,6 +207,8 @@ class AttendeeServiceImplTest {
         assertThatThrownBy(() -> underTest.updateById(id, attendee))
                 .isInstanceOf(UnsupportedOperationException.class)
                 .hasMessageContaining("Cannot update an attendee");
+
+        verify(attendees, never()).save(any());
     }
 
     @Test
