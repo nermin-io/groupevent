@@ -70,5 +70,6 @@ public class Organiser {
         this.lastName = lastName;
         this.emailAddress = emailAddress;
         this.createdAt = Instant.now();
+        this.updatedAt = Instant.now();
     }
 }

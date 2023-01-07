@@ -112,6 +112,8 @@ public class Address {
         this.state = state;
         this.postCode = postCode;
         this.notes = notes;
+        this.createdAt = Instant.now();
+        this.updatedAt = Instant.now();
     }
 
     public Address(Organiser organiser, Address eventAddress) {
