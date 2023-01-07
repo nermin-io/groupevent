@@ -55,6 +55,7 @@ public class Attendee {
             name = "created_at",
             nullable = false
     )
+    @EqualsAndHashCode.Exclude
     private Instant createdAt;
 
     @Column(

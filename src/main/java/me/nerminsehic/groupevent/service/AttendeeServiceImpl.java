@@ -4,9 +4,11 @@ import com.google.common.collect.Sets;
 import lombok.RequiredArgsConstructor;
 import me.nerminsehic.groupevent.entity.Attendee;
 import me.nerminsehic.groupevent.exception.NotFoundException;
+import me.nerminsehic.groupevent.exception.UniqueConstraintException;
 import me.nerminsehic.groupevent.repository.Attendees;
 import org.springframework.stereotype.Service;
 
+import java.time.Clock;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
@@ -19,6 +21,7 @@ import java.util.stream.Collectors;
 public class AttendeeServiceImpl implements AttendeeService {
 
     private final Attendees attendees;
+    private final Clock clock;
 
     @Override
     public Optional<Attendee> findById(UUID id) {
@@ -32,11 +35,11 @@ public class AttendeeServiceImpl implements AttendeeService {
 
     @Override
     public Attendee create(Attendee attendee) {
-        Attendee newAttendee = new Attendee(
-                attendee.getEmailAddress()
-        );
+        String email = attendee.getEmailAddress();
+        attendees.findByEmailAddress(email)
+                .ifPresent(a -> { throw new UniqueConstraintException(Attendee.class, "email_address", email); });
 
-        return attendees.save(newAttendee);
+        return attendees.save(attendee);
     }
 
     @Override
@@ -61,7 +64,7 @@ public class AttendeeServiceImpl implements AttendeeService {
 
     @Override
     public Set<Attendee> updateLastInvited(Set<Attendee> attendeesSet) {
-        attendeesSet.forEach(attendee -> attendee.setLastInvited(Instant.now()));
+        attendeesSet.forEach(attendee -> attendee.setLastInvited(Instant.now(clock)));
         return Sets.newHashSet(attendees.saveAll(attendeesSet));
     }
 
