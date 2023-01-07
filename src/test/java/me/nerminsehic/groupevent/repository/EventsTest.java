@@ -43,7 +43,7 @@ class EventsTest {
     }
 
     @Test
-    void shouldFindEventByIdAndOrganiser() {
+    void itShouldFindEventByIdAndOrganiser() {
         // given
         Organiser organiser = createTestOrganiser();
         Event event = createTestEvent(organiser);
@@ -57,7 +57,7 @@ class EventsTest {
     }
 
     @Test
-    void shouldNotFindEventByIdAndInvalidOrganiser() {
+    void itShouldNotFindEventByIdAndInvalidOrganiser() {
         // given
         Organiser expectedOrganiser = createTestOrganiser();
         Organiser invalidOrganiser = createTestOrganiser();
@@ -71,7 +71,7 @@ class EventsTest {
     }
 
     @Test
-    void shouldFindAllEventsByOrganiser() {
+    void itShouldFindAllEventsByOrganiser() {
         // given
         Organiser organiser = createTestOrganiser();
         Event event1 = createTestEvent(organiser);

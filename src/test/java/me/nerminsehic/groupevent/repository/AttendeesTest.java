@@ -24,7 +24,7 @@ class AttendeesTest {
     }
 
     @Test
-    void shouldFindAttendeeByEmailAddress() {
+    void itShouldFindAttendeeByEmailAddress() {
         // given
         String emailAddress = "test.test@email.com";
         Attendee attendee = underTest.save(new Attendee(
@@ -39,7 +39,7 @@ class AttendeesTest {
     }
 
     @Test
-    void shouldNotFindAttendeeByNonExistingEmailAddress() {
+    void itShouldNotFindAttendeeByNonExistingEmailAddress() {
         // given
         String nonExistingEmailAddress = "test.test@email.com";
 
