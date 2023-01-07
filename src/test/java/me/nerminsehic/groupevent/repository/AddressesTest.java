@@ -1,11 +1,14 @@
 package me.nerminsehic.groupevent.repository;
 
+import com.github.javafaker.Faker;
+import me.nerminsehic.groupevent.TestingConfig;
 import me.nerminsehic.groupevent.entity.Address;
 import me.nerminsehic.groupevent.entity.Organiser;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.Import;
 
 
 import java.util.List;
@@ -14,6 +17,7 @@ import java.util.Optional;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @DataJpaTest
+@Import(TestingConfig.class)
 class AddressesTest {
 
     @Autowired
@@ -21,6 +25,9 @@ class AddressesTest {
 
     @Autowired
     private Organisers organisers;
+
+    @Autowired
+    private Faker faker;
 
     @AfterEach
     void tearDown() {
@@ -31,21 +38,8 @@ class AddressesTest {
     @Test
     void itShouldFindAddressByIdAndOrganiser() {
         // given
-        Organiser organiser = organisers.save(new Organiser(
-                "Test",
-                "Test",
-                "test.test@email.com"
-        ));
-
-        Address address = underTest.save(new Address(
-                organiser,
-                "123 Fake St",
-                "",
-                "Melbourne",
-                "VIC",
-                "3000",
-                "Ring bell"
-        ));
+        Organiser organiser = createTestOrganiser();
+        Address address = createTestAddress(organiser);
 
         // when
         Address foundAddress = underTest.findByIdAndOrganiser(address.getId(), organiser)
@@ -58,27 +52,9 @@ class AddressesTest {
     @Test
     void itShouldNotFindAddressByIdAndInvalidOrganiser() {
         // given
-        Organiser expectedOrganiser = organisers.save(new Organiser(
-                "Test",
-                "Test",
-                "test.test@email.com"
-        ));
-
-        Organiser invalidOrganiser = organisers.save(new Organiser(
-                "Invalid",
-                "Organiser",
-                "invalid.organiser@email.com"
-        ));
-
-        Address address = underTest.save(new Address(
-                expectedOrganiser,
-                "123 Fake St",
-                "",
-                "Melbourne",
-                "VIC",
-                "3000",
-                "Ring bell"
-        ));
+        Organiser expectedOrganiser = createTestOrganiser();
+        Organiser invalidOrganiser = createTestOrganiser();
+        Address address = createTestAddress(expectedOrganiser);
 
         // when
         Optional<Address> result = underTest.findByIdAndOrganiser(address.getId(), invalidOrganiser);
@@ -90,41 +66,10 @@ class AddressesTest {
     @Test
     void itShouldFindAllAddressesByOrganiser() {
         // given
-        Organiser organiser = organisers.save(new Organiser(
-                "Test",
-                "Test",
-                "test.test@email.com"
-        ));
-
-        Address address1 = underTest.save(new Address(
-                organiser,
-                "1 Fake St",
-                "",
-                "Melbourne",
-                "VIC",
-                "3000",
-                "Ring bell"
-        ));
-
-        Address address2 = underTest.save(new Address(
-                organiser,
-                "2 Fake St",
-                "",
-                "Melbourne",
-                "VIC",
-                "3000",
-                "Ring bell"
-        ));
-
-        Address address3 = underTest.save(new Address(
-                organiser,
-                "3 Fake St",
-                "",
-                "Melbourne",
-                "VIC",
-                "3000",
-                "Ring bell"
-        ));
+        Organiser organiser = createTestOrganiser();
+        Address address1 = createTestAddress(organiser);
+        Address address2 = createTestAddress(organiser);
+        Address address3 = createTestAddress(organiser);
 
         // when
         List<Address> allByOrganiser = underTest.findAllByOrganiser(organiser);
@@ -136,15 +81,11 @@ class AddressesTest {
     @Test
     void itShouldFindAddressByOrganiserAndAddressAndStateAndPostCode() {
         // given
-        Organiser organiser = organisers.save(new Organiser(
-                "Test",
-                "Test",
-                "test.test@email.com"
-        ));
+        Organiser organiser = createTestOrganiser();
 
-        String streetAddress = "123 Fake St";
-        String state = "VIC";
-        String postCode = "3000";
+        String streetAddress = faker.address().streetAddress();
+        String state = faker.address().state();
+        String postCode = faker.address().zipCode();
 
         Address address = underTest.save(new Address(
                 organiser,
@@ -165,26 +106,34 @@ class AddressesTest {
     @Test
     void itShouldNotFindAddressByOrganiserAndInvalidAddressAndStateAndPostCode() {
         // given
-        Organiser organiser = organisers.save(new Organiser(
-                "Test",
-                "Test",
-                "test.test@email.com"
-        ));
-
-        Address address = underTest.save(new Address(
-                organiser,
-                "123 Fake St",
-                "",
-                "Melbourne",
-                "VIC",
-                "3000",
-                ""
-        ));
+        Organiser organiser = createTestOrganiser();
+        Address address = createTestAddress(organiser);
 
         // when
         Optional<Address> result = underTest.findByOrganiserAndAddressAndStateAndPostCode(organiser, "456 Fake St", "VIC", "3000");
 
         // then
         assertThat(result).isNotPresent();
+    }
+
+
+    Organiser createTestOrganiser() {
+        return organisers.save(new Organiser(
+                faker.name().firstName(),
+                faker.name().lastName(),
+                faker.internet().emailAddress()
+        ));
+    }
+
+    Address createTestAddress(Organiser organiser) {
+        return underTest.save(new Address(
+           organiser,
+           faker.address().streetAddress(),
+           faker.address().secondaryAddress(),
+           faker.address().city(),
+           faker.address().state(),
+           faker.address().zipCode(),
+           ""
+        ));
     }
 }
