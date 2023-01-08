@@ -8,6 +8,7 @@ import me.nerminsehic.groupevent.exception.NotFoundException;
 import me.nerminsehic.groupevent.repository.Addresses;
 import org.springframework.stereotype.Service;
 
+import java.time.Clock;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
@@ -19,6 +20,7 @@ public class AddressServiceImpl implements AddressService {
 
     private final OrganiserService organiserService;
     private final Addresses addresses;
+    private final Clock clock;
 
     @Override
     public Optional<Address> findById(UUID organiserId, UUID addressId) {
@@ -35,18 +37,10 @@ public class AddressServiceImpl implements AddressService {
     @Override
     public Address create(UUID organiserId, Address address) {
         Organiser organiser = organiserService.getOrganiserById(organiserId);
-        Address newAddress = new Address(
-                organiser,
-                address.getAddress(),
-                address.getAddress2(),
-                address.getCity(),
-                address.getState(),
-                address.getPostCode(),
-                address.getNotes()
-        );
-        newAddress.setUpdatedAt(Instant.now());
+        address.setOrganiser(organiser);
+        address.setUpdatedAt(Instant.now(clock));
 
-        return addresses.save(newAddress);
+        return addresses.save(address);
     }
 
     @Override
@@ -80,19 +74,21 @@ public class AddressServiceImpl implements AddressService {
     public Address findOrCreateAddress(UUID organiserId, Address requestedAddress) {
         Organiser organiser = organiserService.getOrganiserById(organiserId);
 
-        Address address = addresses.findByOrganiserAndAddressAndStateAndPostCode(
+        Optional<Address> addressOpt = addresses.findByOrganiserAndAddressAndStateAndPostCode(
                 organiser,
                 requestedAddress.getAddress(),
                 requestedAddress.getState(),
                 requestedAddress.getPostCode()
-        ).orElseGet(() -> {
-            Address newAddress = new Address(organiser, requestedAddress);
-            newAddress.setUpdatedAt(Instant.now());
+        );
 
-            return newAddress;
-        });
+        if(addressOpt.isPresent())
+            return addressOpt.get();
 
-        return addresses.save(address);
+        Address newAddress = new Address(organiser, requestedAddress);
+        newAddress.setUpdatedAt(Instant.now(clock));
+        newAddress.setCreatedAt(Instant.now(clock));
+
+        return addresses.save(newAddress);
     }
 
     private Address updateAddress(Address currentAddress, Address newAddress) {
@@ -102,7 +98,7 @@ public class AddressServiceImpl implements AddressService {
         currentAddress.setState(newAddress.getState());
         currentAddress.setPostCode(newAddress.getPostCode());
         currentAddress.setNotes(newAddress.getNotes());
-        currentAddress.setUpdatedAt(Instant.now());
+        currentAddress.setUpdatedAt(Instant.now(clock));
 
         return addresses.save(currentAddress);
     }
