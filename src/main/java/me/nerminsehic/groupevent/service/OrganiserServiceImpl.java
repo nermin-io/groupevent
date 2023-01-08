@@ -8,6 +8,7 @@ import me.nerminsehic.groupevent.repository.Organisers;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
+import java.time.Clock;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
@@ -18,6 +19,7 @@ import java.util.UUID;
 public class OrganiserServiceImpl implements OrganiserService {
 
     private final Organisers organisers;
+    private final Clock clock;
 
     @Override
     public Optional<Organiser> findById(UUID id) {
@@ -35,14 +37,9 @@ public class OrganiserServiceImpl implements OrganiserService {
         if (existingOrganiserOpt.isPresent())
             throw new UniqueConstraintException(Organiser.class, "email_address", organiser.getEmailAddress());
 
-        Organiser newOrganiser = new Organiser(
-                organiser.getFirstName(),
-                organiser.getLastName(),
-                organiser.getEmailAddress()
-        );
-        newOrganiser.setUpdatedAt(Instant.now());
+        organiser.setUpdatedAt(Instant.now(clock));
 
-        return organisers.save(newOrganiser);
+        return organisers.save(organiser);
     }
 
     @Override
@@ -74,14 +71,8 @@ public class OrganiserServiceImpl implements OrganiserService {
         return organisers.findByEmailAddress(organiser.getEmailAddress())
                 .map(o -> Pair.of(o, false))
                 .orElseGet(() -> {
-                    Organiser newOrganiser = new Organiser(
-                            organiser.getFirstName(),
-                            organiser.getLastName(),
-                            organiser.getEmailAddress()
-                    );
-                    newOrganiser.setUpdatedAt(Instant.now());
-
-                    return Pair.of(organisers.save(newOrganiser), true);
+                    organiser.setUpdatedAt(Instant.now(clock));
+                    return Pair.of(organisers.save(organiser), true);
                 });
     }
 
@@ -89,7 +80,7 @@ public class OrganiserServiceImpl implements OrganiserService {
         currentOrganiser.setFirstName(newOrganiser.getFirstName());
         currentOrganiser.setLastName(newOrganiser.getLastName());
         currentOrganiser.setEmailAddress(newOrganiser.getEmailAddress());
-        currentOrganiser.setUpdatedAt(Instant.now());
+        currentOrganiser.setUpdatedAt(Instant.now(clock));
 
         return organisers.save(currentOrganiser);
     }
