@@ -48,7 +48,7 @@ class AttendeeServiceImplTest {
     }
 
     @Test
-    void itShould_FindAttendeeById() {
+    void findById_ItShould_FindAttendeeById() {
         // given
         UUID id = UUID.randomUUID();
 
@@ -64,7 +64,7 @@ class AttendeeServiceImplTest {
     }
 
     @Test
-    void itShould_FindAllAttendees() {
+    void findAll_ItShould_FindAllAttendees() {
         // when
         underTest.findAll();
 
@@ -73,7 +73,7 @@ class AttendeeServiceImplTest {
     }
 
     @Test
-    void itShould_CreateNewAttendee() {
+    void create_ItShould_CreateNewAttendee_IfEmailNotExists() {
         // given
         Attendee attendee = new Attendee(faker.internet().emailAddress());
 
@@ -89,7 +89,7 @@ class AttendeeServiceImplTest {
     }
 
     @Test
-    void itShould_ThrowException_WhenDuplicateEmailIsUsed() {
+    void create_ItShouldThrow_UniqueConstraintException_WhenEmailAlreadyExists() {
         // given
         Attendee attendee = new Attendee(faker.internet().emailAddress());
         given(attendees.findByEmailAddress(attendee.getEmailAddress()))
@@ -105,7 +105,7 @@ class AttendeeServiceImplTest {
     }
 
     @Test
-    void itShould_DeleteAttendeeById() {
+    void deleteById_ItShould_DeleteAttendeeById() {
         // given
         UUID id = UUID.randomUUID();
 
@@ -121,7 +121,7 @@ class AttendeeServiceImplTest {
     }
 
     @Test
-    void itShould_DeleteAttendee() {
+    void delete_ItShould_DeleteAttendee() {
         // given
         Attendee attendee = new Attendee(faker.internet().emailAddress());
 
@@ -137,7 +137,7 @@ class AttendeeServiceImplTest {
     }
 
     @Test
-    void itShould_FindAttendeesByEmail_WhenExists() {
+    void findOrCreateAttendeesByEmail_ItShould_FindAttendeesByEmail_WhenExists() {
         // given
         String email = faker.internet().emailAddress();
         Set<String> emails = Set.of(email);
@@ -159,7 +159,7 @@ class AttendeeServiceImplTest {
     }
 
     @Test
-    void itShould_CreateAttendeesByEmail_WhenNotExists() {
+    void findOrCreateAttendeesByEmail_ItShould_CreateAttendeesByEmail_WhenNotExists() {
         String email = faker.internet().emailAddress();
         Set<String> emails = Set.of(email);
 
@@ -180,7 +180,7 @@ class AttendeeServiceImplTest {
     }
 
     @Test
-    void itShould_UpdateAttendeeLastInvited() {
+    void updateLastInvited_ItShould_UpdateAttendeeLastInvited() {
         // given
         Attendee attendee = new Attendee(faker.internet().emailAddress());
         Set<Attendee> attendeeSet = Set.of(attendee);
@@ -197,7 +197,7 @@ class AttendeeServiceImplTest {
     }
 
     @Test
-    void itShouldNot_UpdateAttendeeById() {
+    void updateById_ItShouldThrow_UnsupportedOperationException() {
         // given
         UUID id = UUID.randomUUID();
         Attendee attendee = new Attendee(faker.internet().emailAddress());
@@ -212,7 +212,7 @@ class AttendeeServiceImplTest {
     }
 
     @Test
-    void itShould_UpdateAttendeeName() {
+    void updateName_ItShould_UpdateAttendeeName() {
         // given
         UUID id = UUID.randomUUID();
         String firstName = faker.name().firstName();

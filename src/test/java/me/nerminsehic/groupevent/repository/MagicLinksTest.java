@@ -30,7 +30,7 @@ class MagicLinksTest {
     }
 
     @Test
-    void itShould_FindLinkByIdAndOrganiser() {
+    void findByIdAndOrganiser_ItShould_FindLinkByIdAndOrganiser() {
         // given
         Organiser organiser = createTestOrganiser();
         MagicLink link = createTestLink(organiser);
@@ -44,7 +44,7 @@ class MagicLinksTest {
     }
 
     @Test
-    void itShouldNot_FindLinkByIdAndOrganiser_WhenInvalidOrganiserProvided() {
+    void findByIdAndOrganiser_ItShouldNot_FindLinkByIdAndOrganiser_WhenInvalidOrganiserProvided() {
         // given
         Organiser expectedOrganiser = createTestOrganiser();
         Organiser invalidOrganiser = createTestOrganiser();

@@ -32,7 +32,7 @@ class AddressesTest {
     }
 
     @Test
-    void itShould_FindAddressByIdAndOrganiser() {
+    void findByIdAndOrganiser_ItShould_FindAddressByIdAndOrganiser() {
         // given
         Organiser organiser = createTestOrganiser();
         Address address = createTestAddress(organiser);
@@ -46,7 +46,7 @@ class AddressesTest {
     }
 
     @Test
-    void itShouldNot_FindAddressByIdAndOrganiser_WhenInvalidOrganiserProvided() {
+    void findByIdAndOrganiser_ItShouldNot_FindAddressByIdAndOrganiser_WhenInvalidOrganiserProvided() {
         // given
         Organiser expectedOrganiser = createTestOrganiser();
         Organiser invalidOrganiser = createTestOrganiser();
@@ -60,7 +60,7 @@ class AddressesTest {
     }
 
     @Test
-    void itShould_FindAllAddressesByOrganiser() {
+    void findAllByOrganiser_ItShould_FindAllAddressesByOrganiser() {
         // given
         Organiser organiser = createTestOrganiser();
         Address address1 = createTestAddress(organiser);
@@ -75,7 +75,7 @@ class AddressesTest {
     }
 
     @Test
-    void itShould_FindAddressByOrganiserAndAddressAndStateAndPostCode() {
+    void findByOrganiserAndAddressAndStateAndPostCode_ItShould_ReturnResults() {
         // given
         Organiser organiser = createTestOrganiser();
 
@@ -100,7 +100,7 @@ class AddressesTest {
     }
 
     @Test
-    void itShouldNot_FindAddressByOrganiserAndAddressAndStateAndPostCode_WhenInvalidAddressProvided() {
+    void findByOrganiserAndAddressAndStateAndPostCode_ItShouldNot_ReturnResults_WhenInvalidAddressProvided() {
         // given
         Organiser organiser = createTestOrganiser();
         Address address = createTestAddress(organiser);

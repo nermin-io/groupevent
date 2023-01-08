@@ -39,7 +39,7 @@ class EventsTest {
     }
 
     @Test
-    void itShould_FindEventByIdAndOrganiser() {
+    void findByIdAndOrganiser_ItShould_FindEventByIdAndOrganiser() {
         // given
         Organiser organiser = createTestOrganiser();
         Event event = createTestEvent(organiser);
@@ -53,7 +53,7 @@ class EventsTest {
     }
 
     @Test
-    void itShouldNot_FindEventByIdAndOrganiser_WhenInvalidOrganiserProvided() {
+    void findByIdAndOrganiser_ItShouldNot_FindEventByIdAndOrganiser_WhenInvalidOrganiserProvided() {
         // given
         Organiser expectedOrganiser = createTestOrganiser();
         Organiser invalidOrganiser = createTestOrganiser();
@@ -67,7 +67,7 @@ class EventsTest {
     }
 
     @Test
-    void itShould_FindAllEventsByOrganiser() {
+    void findAllByOrganiser_ItShould_FindAllEventsByOrganiser() {
         // given
         Organiser organiser = createTestOrganiser();
         Event event1 = createTestEvent(organiser);

@@ -25,7 +25,7 @@ class OrganisersTest {
     }
 
     @Test
-    void itShould_FindOrganiserByEmailAddress() {
+    void findByEmailAddress_ItShould_FindOrganiserByEmailAddress() {
         // given
         String emailAddress = faker.internet().emailAddress();
         Organiser organiser = underTest.save(new Organiser(
@@ -43,7 +43,7 @@ class OrganisersTest {
     }
 
     @Test
-    void itShouldNot_FindOrganiserByEmailAddress_WhenEmailNotExists() {
+    void findByEmailAddress_ItShouldNot_FindOrganiserByEmailAddress_WhenEmailNotExists() {
         // given
         String nonExistingEmail = faker.internet().emailAddress();
 
