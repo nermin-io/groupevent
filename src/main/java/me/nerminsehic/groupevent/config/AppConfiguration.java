@@ -7,6 +7,8 @@ import org.modelmapper.TypeMap;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.time.Clock;
+
 @Configuration
 public class AppConfiguration {
 
@@ -17,5 +19,10 @@ public class AppConfiguration {
         eventMapping.addMapping(Event::getInvites, EventDto::setAttendees);
 
         return mapper;
+    }
+
+    @Bean
+    public Clock getClock() {
+        return Clock.systemUTC();
     }
 }
