@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -53,100 +54,122 @@ public class SendgridMailService implements MailService {
     private String eventCancelledTemplateId;
 
     @Override
-    public boolean sendMagicLink(Organiser organiser, MagicLink link) {
-        SendMagicLinkDto data = new SendMagicLinkDto(
+    public void sendLinkToOrganiser(Organiser organiser, MagicLink link) {
+        Mail mail = useTemplateIdAndSender(magicLinkTemplateId, "Groupevent");
+        SendMagicLinkDto magicLinkDto = new SendMagicLinkDto(
                 organiser.getFirstName(),
                 organiser.getLastName(),
                 link.getId()
         );
 
-        Mail mail = useTemplateId(magicLinkTemplateId, "Groupevent");
-        mail.addPersonalization(createPersonalization(organiser.getEmailAddress(), data));
-        mail.setSubject("Verify your login");
+        Personalization personalization = createPersonalization(
+                organiser.getEmailAddress(),
+                magicLinkDto
+        );
+        mail.addPersonalization(personalization);
 
-        return send(mail);
+        send(mail);
     }
 
     @Override
-    public boolean sendEventConfirmation(Event event) {
-        SendEventConfirmationEmailDto data = new SendEventConfirmationEmailDto(event);
+    public void sendEventConfirmationToOrganiser(Event event) {
+        Mail mail = useTemplateIdAndSender(eventConfirmationTemplateId, "Groupevent");
+        SendEventConfirmationEmailDto sendConfirmationDto = new SendEventConfirmationEmailDto(event);
         Organiser organiser = event.getOrganiser();
 
-        Mail mail = useTemplateId(eventConfirmationTemplateId, "Groupevent");
-        mail.addPersonalization(createPersonalization(organiser.getEmailAddress(), data));
-        mail.setSubject("Let's get this party started! Prepare for %s.".formatted(event.getName()));
-
-        return send(mail);
-    }
-
-    @Override
-    public boolean sendInvites(Event event) {
-        String sender = "%s %s (via Groupevent)".formatted(event.getOrganiser().getFirstName(), event.getOrganiser().getLastName());
-        Mail mail = applyPersonalization(
-                useTemplateId(eventInviteTemplateId, sender),
-                createInvitePersonalizationSet(event)
+        Personalization personalization = createPersonalization(
+                organiser.getEmailAddress(),
+                sendConfirmationDto
         );
-        mail.setSubject("You've been invited to %s!".formatted(event.getName()));
-        return send(mail);
+        mail.addPersonalization(personalization);
+
+        send(mail);
     }
 
     @Override
-    public boolean sendInviteResponse(Invite invite) {
+    public void sendInvitesToAttendees(Event event) {
+        String sender = "%s %s (via Groupevent)".formatted(event.getOrganiser().getFirstName(), event.getOrganiser().getLastName());
+        Mail mail = useTemplateIdAndSender(eventInviteTemplateId, sender);
+
+        Address address = event.getAddress();
+        String mapLink = maps.create(address);
+        String directionsLink = directions.getDirectionsLink(address);
+
+        Set<Personalization> personalizationSet = createPersonalizationForEachInvite(
+                event.getInvites(),
+                attendee -> new SendInvitesEmailDto(event, attendee, mapLink, directionsLink)
+        );
+        personalizationSet.forEach(mail::addPersonalization);
+
+        send(mail);
+    }
+
+    @Override
+    public void sendAttendeeResponseToOrganiser(Invite invite) {
         Event event = invite.getEvent();
         Attendee attendee = invite.getAttendee();
+        Organiser organiser = event.getOrganiser();
 
         String sender = "%s %s (via Groupevent)".formatted(attendee.getFirstName(), attendee.getLastName());
-        Mail mail = useTemplateId(inviteResponseTemplateId, sender);
-        mail.addPersonalization(createInviteResponsePersonalization(invite));
+        Mail mail = useTemplateIdAndSender(inviteResponseTemplateId, sender);
 
-        String subject = "Re: %s - I'm %s".formatted(
-                event.getName(),
-                invite.getResponse() == InviteResponse.GOING ? "going!" : "not going."
+        Personalization personalization = createPersonalization(
+                organiser.getEmailAddress(),
+                new InviteResponseEmailDto(invite)
         );
-        mail.setSubject(subject);
+        mail.addPersonalization(personalization);
 
-        return send(mail);
-    }
-
-
-    @Override
-    public boolean sendRescheduledNotice(Event event) {
-        Organiser organiser = event.getOrganiser();
-        String sender = "%s %s (via Groupevent)".formatted(organiser.getFirstName(), organiser.getLastName());
-        Mail mail = applyPersonalization(
-                useTemplateId(eventRescheduledTemplateId, sender),
-                createInvitePersonalizationSet(event)
-        );
-        mail.setSubject("%s has been rescheduled".formatted(event.getName()));
-        return send(mail);
+        send(mail);
     }
 
     @Override
-    public boolean sendCancellationNotice(Event event) {
+    public void sendRescheduledNoticeToAttendees(Event event) {
+        Organiser organiser = event.getOrganiser();
+        Address address = event.getAddress();
+        String mapLink = maps.create(address);
+        String directionsLink = directions.getDirectionsLink(address);
+
+        String sender = "%s %s (via Groupevent)".formatted(organiser.getFirstName(), organiser.getLastName());
+        Mail mail = useTemplateIdAndSender(eventRescheduledTemplateId, sender);
+
+        Set<Personalization> personalizationSet = createPersonalizationForEachInvite(
+                event.getInvites(),
+                attendee -> new SendInvitesEmailDto(event, attendee, mapLink, directionsLink)
+        );
+        personalizationSet.forEach(mail::addPersonalization);
+
+        send(mail);
+    }
+
+    @Override
+    public void sendCancellationNoticeToAttendees(Event event) {
         Organiser organiser = event.getOrganiser();
         String sender = "%s %s (via Groupevent)".formatted(organiser.getFirstName(), organiser.getLastName());
-        Mail mail = applyPersonalization(
-                useTemplateId(eventCancelledTemplateId, sender),
-                createCancellationPersonalizationSet(event)
+
+        Mail mail = useTemplateIdAndSender(eventCancelledTemplateId, sender);
+        Set<Personalization> personalizationSet = createPersonalizationForEachInvite(
+                event.getInvites(),
+                attendee -> new SendCancellationEmailDto(event, attendee)
         );
-        mail.setSubject("%s has been cancelled.".formatted(event.getName()));
-        return send(mail);
+
+        personalizationSet.forEach(mail::addPersonalization);
+        send(mail);
     }
 
     private boolean send(Mail mail) {
-        Request req = initialiseMailRequest(mail);
+        Request req = initRequest(mail);
         Response res;
 
         try {
             res = sendgrid.api(req);
-        } catch(IOException ex) {
+        } catch (IOException ex) {
             throw new SendMailException(ex);
         }
 
         return res.getStatusCode() >= 200 && res.getStatusCode() < 300;
     }
 
-    private Request initialiseMailRequest(Mail mail) {
+    private Request initRequest(Mail mail) {
         Request request = new Request();
         request.setMethod(Method.POST);
         request.setEndpoint("/mail/send");
@@ -160,12 +183,7 @@ public class SendgridMailService implements MailService {
         return request;
     }
 
-    private Mail applyPersonalization(Mail template, Set<Personalization> personalizationSet) {
-        personalizationSet.forEach(template::addPersonalization);
-        return template;
-    }
-
-    private Mail useTemplateId(String templateId, String sender) {
+    private Mail useTemplateIdAndSender(String templateId, String sender) {
         Mail mail = new Mail();
         mail.setFrom(new Email("invites@groupevent.co", sender));
         mail.setReplyTo(new Email("invites@groupevent.co", sender));
@@ -176,60 +194,23 @@ public class SendgridMailService implements MailService {
         return mail;
     }
 
-    private Set<Personalization> createInvitePersonalizationSet(Event event) {
-        Address address = event.getAddress();
-
-        String mapLink = maps.create(address);
-        String directionsLink = directions.getDirectionsLink(address);
-
-        return event.getInvites()
-                .stream()
+    private Set<Personalization> createPersonalizationForEachInvite(Set<Invite> invites, Function<Attendee, Object> personalizeFn) {
+        return invites.stream()
                 .map(Invite::getAttendee)
-                .map(attendee -> {
-                    Map<String, Object> data = Converter.objectToMap(new SendInvitesEmailDto(event, attendee, mapLink, directionsLink));
-                    Personalization p = new Personalization();
-                    p.addTo(new Email(attendee.getEmailAddress()));
-                    data.keySet().forEach(key -> p.addDynamicTemplateData(key, data.get(key)));
-
-                    return p;
-                })
+                .map(attendee -> createPersonalization(
+                        attendee.getEmailAddress(),
+                        personalizeFn.apply(attendee)
+                ))
                 .collect(Collectors.toSet());
     }
 
-    private Set<Personalization> createCancellationPersonalizationSet(Event event) {
-        return event.getInvites()
-                .stream()
-                .map(Invite::getAttendee)
-                .map(attendee -> {
-                    Map<String, Object> data = Converter.objectToMap(new SendCancellationEmailDto(event, attendee));
-                    Personalization p = new Personalization();
-                    p.addTo(new Email(attendee.getEmailAddress()));
-                    data.keySet().forEach(key -> p.addDynamicTemplateData(key, data.get(key)));
-
-                    return p;
-                })
-                .collect(Collectors.toSet());
-    }
-
-    private Personalization createPersonalization(String email, Object obj) {
+    private Personalization createPersonalization(String email, Object dto) {
         Personalization personalization = new Personalization();
-        Map<String, Object> data = Converter.objectToMap(obj);
+        Map<String, Object> data = Converter.objectToMap(dto);
 
         personalization.addTo(new Email(email));
         data.keySet().forEach(key -> personalization.addDynamicTemplateData(key, data.get(key)));
 
         return personalization;
     }
-
-    private Personalization createInviteResponsePersonalization(Invite invite) {
-        Personalization personalization = new Personalization();
-        Map<String, Object> data = Converter.objectToMap(new InviteResponseEmailDto(invite));
-        Event event = invite.getEvent();
-
-        personalization.addTo(new Email(event.getOrganiser().getEmailAddress()));
-        data.keySet().forEach(key -> personalization.addDynamicTemplateData(key, data.get(key)));
-
-        return personalization;
-    }
-
 }

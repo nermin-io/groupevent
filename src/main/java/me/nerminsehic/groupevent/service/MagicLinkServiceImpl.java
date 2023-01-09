@@ -26,7 +26,7 @@ public class MagicLinkServiceImpl implements MagicLinkService {
         MagicLink link = new MagicLink(organiser);
 
         MagicLink persistedLink = magicLinks.save(link);
-        mailService.sendMagicLink(organiser, persistedLink);
+        mailService.sendLinkToOrganiser(organiser, persistedLink);
 
         return persistedLink;
     }

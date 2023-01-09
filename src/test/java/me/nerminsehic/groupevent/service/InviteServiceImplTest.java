@@ -79,7 +79,7 @@ class InviteServiceImplTest {
 
         // verify that organiser is notified
         ArgumentCaptor<Invite> persistedInviteArgumentCaptor = ArgumentCaptor.forClass(Invite.class);
-        verify(mailService).sendInviteResponse(persistedInviteArgumentCaptor.capture());
+        verify(mailService).sendAttendeeResponseToOrganiser(persistedInviteArgumentCaptor.capture());
         assertThat(persistedInviteArgumentCaptor.getValue()).isEqualTo(invite);
 
         // verify that attendee name is updated

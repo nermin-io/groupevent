@@ -58,8 +58,8 @@ public class EventServiceImpl implements EventService {
         newEvent.setStatus(EventStatus.PLANNED);
 
         Event persistedEvent = events.save(newEvent);
-        mailService.sendInvites(persistedEvent);
-        mailService.sendEventConfirmation(persistedEvent);
+        mailService.sendInvitesToAttendees(persistedEvent);
+        mailService.sendEventConfirmationToOrganiser(persistedEvent);
 
         attendeeService.updateLastInvited(attendees);
         return persistedEvent;
@@ -90,7 +90,7 @@ public class EventServiceImpl implements EventService {
         event.setCancelMessage(message);
 
         Event persistedEvent = events.save(event);
-        mailService.sendCancellationNotice(persistedEvent);
+        mailService.sendCancellationNoticeToAttendees(persistedEvent);
 
         return persistedEvent;
     }
@@ -112,7 +112,7 @@ public class EventServiceImpl implements EventService {
         event.setStatus(EventStatus.RESCHEDULED);
 
         Event persistedEvent = events.save(event);
-        mailService.sendRescheduledNotice(persistedEvent);
+        mailService.sendRescheduledNoticeToAttendees(persistedEvent);
 
         return persistedEvent;
     }

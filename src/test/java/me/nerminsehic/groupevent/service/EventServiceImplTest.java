@@ -138,10 +138,10 @@ class EventServiceImplTest {
         verify(events).save(eventArgumentCaptor.capture());
         assertThat(eventArgumentCaptor.getValue()).isEqualTo(event);
 
-        verify(mailService).sendInvites(eventArgumentCaptor.capture());
+        verify(mailService).sendInvitesToAttendees(eventArgumentCaptor.capture());
         assertThat(eventArgumentCaptor.getValue()).isEqualTo(event);
 
-        verify(mailService).sendEventConfirmation(eventArgumentCaptor.capture());
+        verify(mailService).sendEventConfirmationToOrganiser(eventArgumentCaptor.capture());
         assertThat(eventArgumentCaptor.getValue()).isEqualTo(event);
 
         verify(attendeeService).updateLastInvited(attendeeArgumentCaptor.capture());
@@ -237,7 +237,7 @@ class EventServiceImplTest {
         verify(events).save(eventArgumentCaptor.capture());
         assertThat(eventArgumentCaptor.getValue()).isEqualTo(event);
 
-        verify(mailService).sendCancellationNotice(eventArgumentCaptor.capture());
+        verify(mailService).sendCancellationNoticeToAttendees(eventArgumentCaptor.capture());
         assertThat(eventArgumentCaptor.getValue()).isEqualTo(event);
     }
 
@@ -333,7 +333,7 @@ class EventServiceImplTest {
         verify(events).save(eventArgumentCaptor.capture());
         assertThat(eventArgumentCaptor.getValue()).isEqualTo(event);
 
-        verify(mailService).sendRescheduledNotice(eventArgumentCaptor.capture());
+        verify(mailService).sendRescheduledNoticeToAttendees(eventArgumentCaptor.capture());
         assertThat(eventArgumentCaptor.getValue()).isEqualTo(event);
     }
 

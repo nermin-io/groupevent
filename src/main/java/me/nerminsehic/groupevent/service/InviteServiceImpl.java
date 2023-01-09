@@ -36,7 +36,7 @@ public class InviteServiceImpl implements InviteService {
 
         Invite persistedInvite = invites.save(invite);
 
-        mailService.sendInviteResponse(persistedInvite);
+        mailService.sendAttendeeResponseToOrganiser(persistedInvite);
         return persistedInvite;
     }
 

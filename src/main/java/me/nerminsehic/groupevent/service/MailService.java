@@ -4,16 +4,16 @@ import me.nerminsehic.groupevent.entity.*;
 
 public interface MailService {
 
-    boolean sendMagicLink(Organiser organiser, MagicLink link);
+    void sendLinkToOrganiser(Organiser organiser, MagicLink link);
 
-    boolean sendInvites(Event event);
+    void sendInvitesToAttendees(Event event);
 
-    boolean sendInviteResponse(Invite invite);
+    void sendAttendeeResponseToOrganiser(Invite invite);
 
-    boolean sendCancellationNotice(Event event);
+    void sendCancellationNoticeToAttendees(Event event);
 
-    boolean sendRescheduledNotice(Event event);
+    void sendRescheduledNoticeToAttendees(Event event);
 
-    boolean sendEventConfirmation(Event event);
+    void sendEventConfirmationToOrganiser(Event event);
 
 }

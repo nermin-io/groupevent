@@ -66,7 +66,7 @@ class MagicLinkServiceImplTest {
 
         ArgumentCaptor<Organiser> organiserArgumentCaptor = ArgumentCaptor.forClass(Organiser.class);
         ArgumentCaptor<MagicLink> magicLinkArgumentCaptor = ArgumentCaptor.forClass(MagicLink.class);
-        verify(mailService).sendMagicLink(organiserArgumentCaptor.capture(), magicLinkArgumentCaptor.capture());
+        verify(mailService).sendLinkToOrganiser(organiserArgumentCaptor.capture(), magicLinkArgumentCaptor.capture());
 
         assertThat(organiserArgumentCaptor.getValue()).isEqualTo(organiser);
         assertThat(magicLinkArgumentCaptor.getValue()).isEqualTo(link);
