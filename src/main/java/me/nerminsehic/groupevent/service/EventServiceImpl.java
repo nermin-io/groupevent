@@ -1,6 +1,5 @@
 package me.nerminsehic.groupevent.service;
 
-import jdk.jfr.Registered;
 import lombok.RequiredArgsConstructor;
 import me.nerminsehic.groupevent.entity.*;
 import me.nerminsehic.groupevent.exception.IllegalOperationException;
@@ -8,6 +7,7 @@ import me.nerminsehic.groupevent.exception.NotFoundException;
 import me.nerminsehic.groupevent.repository.Events;
 import org.springframework.stereotype.Service;
 
+import java.time.Clock;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
@@ -23,6 +23,7 @@ public class EventServiceImpl implements EventService {
     private final AddressService addressService;
     private final AttendeeService attendeeService;
     private final MailService mailService;
+    private final Clock clock;
 
     @Override
     public Optional<Event> findById(UUID organiserId, UUID eventId) {
@@ -52,7 +53,8 @@ public class EventServiceImpl implements EventService {
                 event.getTimeTo(),
                 event.getAgenda()
         );
-        newEvent.setUpdatedAt(Instant.now());
+        newEvent.setUpdatedAt(Instant.now(clock));
+        newEvent.setCreatedAt(Instant.now(clock));
         newEvent.setStatus(EventStatus.PLANNED);
 
         Event persistedEvent = events.save(newEvent);
@@ -84,7 +86,7 @@ public class EventServiceImpl implements EventService {
             throw new IllegalOperationException("Cannot cancel event that is already cancelled.");
 
         event.setStatus(EventStatus.CANCELLED);
-        event.setUpdatedAt(Instant.now());
+        event.setUpdatedAt(Instant.now(clock));
         event.setCancelMessage(message);
 
         Event persistedEvent = events.save(event);
@@ -106,7 +108,7 @@ public class EventServiceImpl implements EventService {
         event.setTimeFrom(newEvent.getTimeFrom());
         event.setTimeTo(newEvent.getTimeTo());
         event.setAgenda(newEvent.getAgenda());
-        event.setUpdatedAt(Instant.now());
+        event.setUpdatedAt(Instant.now(clock));
         event.setStatus(EventStatus.RESCHEDULED);
 
         Event persistedEvent = events.save(event);
@@ -141,7 +143,7 @@ public class EventServiceImpl implements EventService {
         currentEvent.setScheduledDate(newEvent.getScheduledDate());
         currentEvent.setTimeFrom(newEvent.getTimeFrom());
         currentEvent.setTimeTo(newEvent.getTimeTo());
-        currentEvent.setUpdatedAt(Instant.now());
+        currentEvent.setUpdatedAt(Instant.now(clock));
 
         return events.save(currentEvent);
     }

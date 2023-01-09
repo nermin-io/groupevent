@@ -112,6 +112,7 @@ public class Event {
             orphanRemoval = true,
             cascade = { CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.REFRESH }
     )
+    @EqualsAndHashCode.Exclude
     private Set<Invite> invites = new HashSet<>();
 
     @Column(
