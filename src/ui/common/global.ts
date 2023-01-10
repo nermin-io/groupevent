@@ -8,7 +8,7 @@ export const globalStyles = globalCss({
         textDecoration: 'none'
     },
     'body': {
-        backgroundColor: 'rgba(167, 72, 194, .05)'
+        backgroundColor: '#F9F9F9'
     },
     'html, body': {
         padding: 0,
