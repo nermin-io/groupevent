@@ -30,7 +30,7 @@ const BaseButton = styled('button', {
       variant: {
         primary: {
           backgroundColor: '#692C98',
-          color: '#E3CEF4',
+          color: '#F3E4FF',
           '&:hover': { backgroundColor: '#682F95' },
           '&:focus': { boxShadow: `0 0 0 2px black` },
           '&.disabled': {
