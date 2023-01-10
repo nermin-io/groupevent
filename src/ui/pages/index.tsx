@@ -1,8 +1,15 @@
+import React from 'react';
+import {NextPage} from "next";
+import Card from "../components/Card";
 
-export default function Home() {
+const Home: NextPage = () => {
   return (
-    <>
-      <main>Hello World</main>
-    </>
-  )
+      <>
+        <Card>
+            Hello
+        </Card>
+      </>
+  );
 }
+
+export default Home;
