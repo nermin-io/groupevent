@@ -18,10 +18,6 @@ const Home: NextPage = () => {
             <LogoBox>
                 <Logo />
             </LogoBox>
-            <Text css={{lineHeight: 1.375, fontWeight: 450}}>
-                Easily invite friends to your event. <br/>
-                No signup, no marketing, no bs.
-            </Text>
             <GettingStarted />
 
         </Card>
