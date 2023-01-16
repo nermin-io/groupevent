@@ -53,7 +53,7 @@ const BaseInput = styled('input', {
     lineHeight: 1,
     display: 'block',
     width: '100%',
-    height: '100%',
+    height: '100%'
   });
 
   const Input: React.FC<Props> = ({prefix='', css={}, size='large', suffix='', ...props}) => {
