@@ -2,7 +2,6 @@ import React from 'react';
 import { NextPage } from "next";
 import Card from "../components/Card";
 import Logo from "../components/Logo";
-import Text from "../components/Text";
 import { styled } from '../stitches.config';
 import Box from "../components/Box";
 import GettingStarted from "../containers/GettingStarted";
