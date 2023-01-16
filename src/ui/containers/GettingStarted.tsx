@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Flex from "../components/Flex";
 import Checkbox from "../components/Checkbox";
 import Button from "../components/Button";
@@ -11,6 +11,19 @@ interface Props {}
 const GettingStarted: React.FC<Props> = () => {
 
     const [isChecked, setIsChecked] = useState(false);
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [email, setEmail] = useState('');
+
+    const [isValid, setIsValid] = useState(false);
+
+    useEffect(() => {
+        if(isChecked && firstName.length > 0 && lastName.length > 0 && email.length > 0) {
+            setIsValid(true);
+        } else {
+            setIsValid(false);
+        }
+    }, [isChecked, firstName, lastName, email]);
 
     return (
         <>
@@ -19,16 +32,16 @@ const GettingStarted: React.FC<Props> = () => {
                 No signup, no marketing, no bs.
             </Text>
             <Flex>
-                <Input placeholder="First Name"/>
-                <Input placeholder="Last Name"/>
+                <Input placeholder="First Name" value={firstName} onChange={e => setFirstName(e.target.value)} />
+                <Input placeholder="Last Name" value={lastName} onChange={e => setLastName(e.target.value)} />
             </Flex>
-            <Input placeholder="Email Address"/>
+            <Input placeholder="Email Address" value={email} onChange={e => setEmail(e.target.value)} />
             <Flex css={{justifyContent: 'flex-start', alignItems: 'center', marginTop: 35}}>
                 <Checkbox checked={isChecked} onCheckedChange={checked => setIsChecked(checked as boolean)}/>
                 <Text css={{color: '#777', fontSize: 14}}>I agree with the terms and conditions.</Text>
             </Flex>
             <Box css={{marginTop: 75}}>
-                <Button disabled={!isChecked}>Submit</Button>
+                <Button disabled={!isValid}>Get Started</Button>
             </Box>
 
         </>
