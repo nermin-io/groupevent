@@ -38,10 +38,10 @@ public class MagicLinkServiceImpl implements MagicLinkService {
                 .orElseThrow(() -> new NotFoundException(MagicLink.class, linkId));
 
         Instant now = Instant.now();
-        if(now.isAfter(link.getExpiresAt())) // check if the link has expired
+        if (now.isAfter(link.getExpiresAt())) // check if the link has expired
             throw new LinkException("The link expired at %s. Current Time: %s".formatted(link.getExpiresAt(), now));
 
-        if(link.getStatus() == LinkStatus.CLOSED) // check if the link has already been activated
+        if (link.getStatus() == LinkStatus.CLOSED) // check if the link has already been activated
             throw new LinkException("The link has already been activated");
 
         link.setStatus(LinkStatus.CLOSED);

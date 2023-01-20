@@ -26,7 +26,7 @@ public class InviteServiceImpl implements InviteService {
         Invite invite = getInvite(eventId, attendeeId);
         Event event = invite.getEvent();
 
-        if(event.getStatus() == EventStatus.CANCELLED)
+        if (event.getStatus() == EventStatus.CANCELLED)
             throw new IllegalOperationException("This event has been cancelled");
 
         attendeeService.updateName(attendeeId, firstName, lastName);

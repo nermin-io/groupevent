@@ -110,7 +110,7 @@ public class Event {
     @OneToMany(
             mappedBy = "event",
             orphanRemoval = true,
-            cascade = { CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.REFRESH }
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.REFRESH}
     )
     @EqualsAndHashCode.Exclude
     private Set<Invite> invites = new HashSet<>();
@@ -137,19 +137,19 @@ public class Event {
             LocalTime timeTo,
             String agenda
     ) {
-       this.organiser = organiser;
-       this.address = address;
-       this.name = name;
-       this.description = description;
-       this.scheduledDate = scheduledDate;
-       this.timeFrom = timeFrom;
-       this.timeTo = timeTo;
-       this.agenda = agenda;
-       this.invites = attendees
-               .stream()
-               .map(attendee -> new Invite(this, attendee))
-               .collect(Collectors.toSet());
+        this.organiser = organiser;
+        this.address = address;
+        this.name = name;
+        this.description = description;
+        this.scheduledDate = scheduledDate;
+        this.timeFrom = timeFrom;
+        this.timeTo = timeTo;
+        this.agenda = agenda;
+        this.invites = attendees
+                .stream()
+                .map(attendee -> new Invite(this, attendee))
+                .collect(Collectors.toSet());
 
-       this.createdAt = Instant.now();
+        this.createdAt = Instant.now();
     }
 }

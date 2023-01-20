@@ -82,7 +82,7 @@ public class EventServiceImpl implements EventService {
         Event event = events.findByIdAndOrganiser(eventId, organiser)
                 .orElseThrow(() -> new NotFoundException(Event.class, eventId));
 
-        if(event.getStatus() == EventStatus.CANCELLED)
+        if (event.getStatus() == EventStatus.CANCELLED)
             throw new IllegalOperationException("Cannot cancel event that is already cancelled.");
 
         event.setStatus(EventStatus.CANCELLED);
@@ -101,7 +101,7 @@ public class EventServiceImpl implements EventService {
         Event event = events.findByIdAndOrganiser(eventId, organiser)
                 .orElseThrow(() -> new NotFoundException(Event.class, eventId));
 
-        if(event.getStatus() == EventStatus.CANCELLED)
+        if (event.getStatus() == EventStatus.CANCELLED)
             throw new IllegalOperationException("Cannot reschedule a cancelled event.");
 
         event.setScheduledDate(newEvent.getScheduledDate());
@@ -129,7 +129,7 @@ public class EventServiceImpl implements EventService {
     @Override
     public void delete(UUID organiserId, Event event) {
         Organiser organiser = organiserService.getOrganiserById(organiserId);
-        if(!event.getOrganiser().equals(organiser))
+        if (!event.getOrganiser().equals(organiser))
             throw new IllegalOperationException("Attempt to illegally delete an event failed.");
 
         events.delete(event);

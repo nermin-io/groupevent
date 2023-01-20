@@ -55,7 +55,7 @@ public class AddressServiceImpl implements AddressService {
     @Override
     public void delete(UUID organiserId, Address address) {
         Organiser organiser = organiserService.getOrganiserById(organiserId);
-        if(!address.getOrganiser().equals(organiser)) // security check
+        if (!address.getOrganiser().equals(organiser)) // security check
             throw new IllegalOperationException("Attempt to illegally delete an address failed.");
 
         addresses.delete(address);
@@ -81,7 +81,7 @@ public class AddressServiceImpl implements AddressService {
                 requestedAddress.getPostCode()
         );
 
-        if(addressOpt.isPresent())
+        if (addressOpt.isPresent())
             return addressOpt.get();
 
         Address newAddress = new Address(organiser, requestedAddress);

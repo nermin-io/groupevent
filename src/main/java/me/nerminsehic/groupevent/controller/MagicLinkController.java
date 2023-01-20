@@ -20,7 +20,7 @@ public class MagicLinkController {
     @ResponseStatus(HttpStatus.CREATED)
     public String createLink(@PathVariable UUID organiserId) {
         MagicLink link = linkService.create(organiserId);
-        if(link == null || link.getId() == null)
+        if (link == null || link.getId() == null)
             throw new LinkException("Failed to create link. Please try again later");
 
         return "Successfully created a link";

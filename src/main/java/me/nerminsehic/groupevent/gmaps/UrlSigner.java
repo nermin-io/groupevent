@@ -14,35 +14,35 @@ import java.net.URL;
 @Component
 public class UrlSigner {
 
-  private final byte[] key;
+    private final byte[] key;
 
-  public String sign(String encodedUrl) throws IOException, InvalidKeyException, NoSuchAlgorithmException {
-    URL url = new URL(encodedUrl);
-    String request = signRequest(url.getPath(),url.getQuery());
+    public String sign(String encodedUrl) throws IOException, InvalidKeyException, NoSuchAlgorithmException {
+        URL url = new URL(encodedUrl);
+        String request = signRequest(url.getPath(), url.getQuery());
 
-    return url.getProtocol() + "://" + url.getHost() + request;
-  }
+        return url.getProtocol() + "://" + url.getHost() + request;
+    }
 
-  public UrlSigner(@Value("${google.maps.static.signing-secret}") String signingSecret) {
-    signingSecret = signingSecret.replace('-', '+');
-    signingSecret = signingSecret.replace('_', '/');
+    public UrlSigner(@Value("${google.maps.static.signing-secret}") String signingSecret) {
+        signingSecret = signingSecret.replace('-', '+');
+        signingSecret = signingSecret.replace('_', '/');
 
-    key = Base64.getDecoder().decode(signingSecret);
-  }
+        key = Base64.getDecoder().decode(signingSecret);
+    }
 
-  public String signRequest(String path, String query) throws NoSuchAlgorithmException, InvalidKeyException {
-    String resource = path + '?' + query;
-    SecretKeySpec sha1Key = new SecretKeySpec(key, "HmacSHA1");
+    public String signRequest(String path, String query) throws NoSuchAlgorithmException, InvalidKeyException {
+        String resource = path + '?' + query;
+        SecretKeySpec sha1Key = new SecretKeySpec(key, "HmacSHA1");
 
-    Mac mac = Mac.getInstance("HmacSHA1");
-    mac.init(sha1Key);
+        Mac mac = Mac.getInstance("HmacSHA1");
+        mac.init(sha1Key);
 
-    byte[] sigBytes = mac.doFinal(resource.getBytes());
+        byte[] sigBytes = mac.doFinal(resource.getBytes());
 
-    String signature = Base64.getEncoder().encodeToString(sigBytes);
-    signature = signature.replace('+', '-');
-    signature = signature.replace('/', '_');
+        String signature = Base64.getEncoder().encodeToString(sigBytes);
+        signature = signature.replace('+', '-');
+        signature = signature.replace('/', '_');
 
-    return resource + "&signature=" + signature;
-  }
+        return resource + "&signature=" + signature;
+    }
 }

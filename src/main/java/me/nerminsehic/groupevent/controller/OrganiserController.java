@@ -46,7 +46,7 @@ public class OrganiserController {
         OrganiserDto organiserDto = convertToDto(result.getFirst());
         boolean isCreated = result.getSecond();
 
-        if(isCreated)
+        if (isCreated)
             return new ResponseEntity<>(organiserDto, HttpStatus.CREATED);
 
         return new ResponseEntity<>(organiserDto, HttpStatus.OK);

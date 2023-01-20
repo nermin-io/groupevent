@@ -49,7 +49,7 @@ public class StaticMaps {
 
         try {
             return urlSigner.sign(encodedUrl);
-        } catch(IOException | InvalidKeyException | NoSuchAlgorithmException e) {
+        } catch (IOException | InvalidKeyException | NoSuchAlgorithmException e) {
             return encodedUrl;
         }
     }
@@ -79,8 +79,8 @@ public class StaticMaps {
     private String stylize(String map, List<String> styles) {
         StringBuilder url = new StringBuilder(map);
         styles.forEach(style -> {
-           url.append("&style=");
-           url.append(Encoder.encodeUtf8(style));
+            url.append("&style=");
+            url.append(Encoder.encodeUtf8(style));
         });
 
         return url.toString();

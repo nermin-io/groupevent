@@ -6,7 +6,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Map;
 
 public class Converter {
-    private Converter() {} // non-instantiatable
+    private Converter() {
+    } // non-instantiatable
+
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
     public static Map<String, Object> objectToMap(Object obj) {

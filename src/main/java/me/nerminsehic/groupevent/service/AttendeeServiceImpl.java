@@ -37,7 +37,9 @@ public class AttendeeServiceImpl implements AttendeeService {
     public Attendee create(Attendee attendee) {
         String email = attendee.getEmailAddress();
         attendees.findByEmailAddress(email)
-                .ifPresent(a -> { throw new UniqueConstraintException(Attendee.class, "email_address", email); });
+                .ifPresent(a -> {
+                    throw new UniqueConstraintException(Attendee.class, "email_address", email);
+                });
 
         return attendees.save(attendee);
     }
