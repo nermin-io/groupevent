@@ -107,9 +107,9 @@ class EventsTest {
 
     Organiser createTestOrganiser() {
         return organisers.save(new Organiser(
-           faker.name().firstName(),
-           faker.name().lastName(),
-           faker.internet().emailAddress()
+                faker.name().firstName(),
+                faker.name().lastName(),
+                faker.internet().emailAddress()
         ));
     }
 }

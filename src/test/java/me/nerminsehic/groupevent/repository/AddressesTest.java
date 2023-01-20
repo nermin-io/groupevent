@@ -123,13 +123,13 @@ class AddressesTest {
 
     Address createTestAddress(Organiser organiser) {
         return underTest.save(new Address(
-           organiser,
-           faker.address().streetAddress(),
-           faker.address().secondaryAddress(),
-           faker.address().city(),
-           faker.address().state(),
-           faker.address().zipCode(),
-           ""
+                organiser,
+                faker.address().streetAddress(),
+                faker.address().secondaryAddress(),
+                faker.address().city(),
+                faker.address().state(),
+                faker.address().zipCode(),
+                ""
         ));
     }
 }

@@ -327,13 +327,13 @@ class AddressServiceImplTest {
 
     private Address createTestAddress(Organiser organiser) {
         return new Address(
-          organiser,
-          faker.address().streetAddress(),
-          faker.address().secondaryAddress(),
-          faker.address().city(),
-          faker.address().state(),
-          faker.address().zipCode(),
-          "Ring bell"
+                organiser,
+                faker.address().streetAddress(),
+                faker.address().secondaryAddress(),
+                faker.address().city(),
+                faker.address().state(),
+                faker.address().zipCode(),
+                "Ring bell"
         );
     }
 }

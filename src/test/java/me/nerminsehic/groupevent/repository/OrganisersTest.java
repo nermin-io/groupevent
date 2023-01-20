@@ -29,9 +29,9 @@ class OrganisersTest {
         // given
         String emailAddress = faker.internet().emailAddress();
         Organiser organiser = underTest.save(new Organiser(
-           faker.name().firstName(),
-           faker.name().lastName(),
-           emailAddress
+                faker.name().firstName(),
+                faker.name().lastName(),
+                emailAddress
         ));
 
         // when
