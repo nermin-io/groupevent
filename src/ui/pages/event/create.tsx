@@ -5,11 +5,13 @@ import Wizard from "../../containers/Wizard";
 import EventNameForm from "../../containers/EventNameForm";
 import EventLocationForm from "../../containers/EventLocationForm";
 import EventTimeForm from "../../containers/EventTimeForm";
+import EventAttendeesForm from "../../containers/EventAttendeesForm";
 
 const componentsList = [
     EventNameForm,
     EventLocationForm,
-    EventTimeForm
+    EventTimeForm,
+    EventAttendeesForm
 ];
 
 const CreateEvent: NextPage = () => {
