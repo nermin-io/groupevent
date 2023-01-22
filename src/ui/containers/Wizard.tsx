@@ -25,8 +25,8 @@ const Wizard: React.FC<Props> = ({ components }) => {
     <Box>
       <StepComponent />
       <Flex>
-        <Button variant="outline" onClick={handlePreviousStep}>Cancel</Button>
-        <Button onClick={handleNextStep}>Continue</Button>
+        <Button variant="outline" onClick={handlePreviousStep}>{step === 0 ? 'Cancel' : 'Go Back'}</Button>
+        <Button onClick={handleNextStep} disabled={step === components.length - 1}>Continue</Button>
       </Flex>
     </Box>
   );

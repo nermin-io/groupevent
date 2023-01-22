@@ -4,7 +4,6 @@ import Flex from "../components/Flex";
 import Label from "../components/Label";
 import Input from "../components/Input";
 import Textarea from "../components/Textarea";
-import Button from "../components/Button";
 import Text from "../components/Text";
 
 interface Props {}
@@ -22,7 +21,7 @@ const EventNameForm: React.FC<Props> = () => {
         </Box>
         <Box>
           <Label htmlFor="description">Description</Label>
-          <Textarea placeholder="I'm throwing a birthday party..." />
+          <Textarea placeholder="I'm throwing a birthday party..." id="description" />
         </Box>
       </Flex>
     </Box>
