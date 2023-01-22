@@ -4,10 +4,12 @@ import Card from "../../components/Card";
 import Wizard from "../../containers/Wizard";
 import EventNameForm from "../../containers/EventNameForm";
 import EventLocationForm from "../../containers/EventLocationForm";
+import EventTimeForm from "../../containers/EventTimeForm";
 
 const componentsList = [
     EventNameForm,
-    EventLocationForm
+    EventLocationForm,
+    EventTimeForm
 ];
 
 const CreateEvent: NextPage = () => {
