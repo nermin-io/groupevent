@@ -1,11 +1,13 @@
 package me.nerminsehic.groupevent.controller;
 
 import lombok.RequiredArgsConstructor;
+import me.nerminsehic.groupevent.dto.OrganiserDto;
 import me.nerminsehic.groupevent.entity.MagicLink;
 import me.nerminsehic.groupevent.entity.Organiser;
 import me.nerminsehic.groupevent.exception.LinkException;
 import me.nerminsehic.groupevent.service.MagicLinkService;
 import me.nerminsehic.groupevent.service.OrganiserService;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +20,7 @@ public class MagicLinkController {
 
     private final MagicLinkService linkService;
     private final OrganiserService organiserService;
+    private final ModelMapper modelMapper;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -32,9 +35,10 @@ public class MagicLinkController {
 
     @PatchMapping("{linkId}")
     @ResponseStatus(HttpStatus.OK)
-    public String activateLink(@PathVariable UUID organiserId, @PathVariable UUID linkId) {
+    public OrganiserDto activateLink(@PathVariable UUID organiserId, @PathVariable UUID linkId) {
         Organiser organiser = organiserService.getOrganiserById(organiserId);
         linkService.activate(organiser, linkId);
-        return "Successfully activated link: %s".formatted(linkId);
+
+        return modelMapper.map(organiser, OrganiserDto.class);
     }
 }
