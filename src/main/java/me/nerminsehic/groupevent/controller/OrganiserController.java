@@ -52,6 +52,18 @@ public class OrganiserController {
         return new ResponseEntity<>(organiserDto, HttpStatus.OK);
     }
 
+    @PostMapping("login")
+    public ResponseEntity<String> organiserAttemptLogin(@Validated @RequestBody OrganiserDto reqOrganiserDto) {
+        Organiser organiser = convertToEntity(reqOrganiserDto);
+        boolean isCreated = organiserService.attemptLogin(organiser);
+
+        String message = "Please check your email for access token";
+        if(isCreated)
+            return new ResponseEntity<>(message, HttpStatus.CREATED);
+
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
+
     @GetMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
     public OrganiserDto getOrganiserById(@PathVariable UUID id) {

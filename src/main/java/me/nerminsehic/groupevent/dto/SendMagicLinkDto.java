@@ -12,6 +12,9 @@ import java.util.UUID;
 @AllArgsConstructor
 public class SendMagicLinkDto {
 
+    @JsonProperty("organiser_id")
+    private UUID organiserId;
+
     @JsonProperty("first_name")
     private String firstName;
 

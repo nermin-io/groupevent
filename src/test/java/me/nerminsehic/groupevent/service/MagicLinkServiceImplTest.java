@@ -32,9 +32,6 @@ class MagicLinkServiceImplTest {
     private MagicLinks magicLinks;
 
     @Mock
-    private OrganiserService organiserService;
-
-    @Mock
     private MailService mailService;
 
     private MagicLinkService underTest;
@@ -42,24 +39,20 @@ class MagicLinkServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        underTest = new MagicLinkServiceImpl(magicLinks, organiserService, mailService);
+        underTest = new MagicLinkServiceImpl(magicLinks, mailService);
     }
 
     @Test
-    void create_ItShould_CreateNewLinkAndSendEmail_GivenOrganiserId() {
+    void create_ItShould_CreateNewLinkAndSendEmail_GivenOrganiser() {
         // given
-        UUID organiserId = UUID.randomUUID();
         Organiser organiser = createTestOrganiser();
         MagicLink link = new MagicLink(organiser);
-
-        given(organiserService.getOrganiserById(organiserId))
-                .willReturn(organiser);
 
         given(magicLinks.save(any(MagicLink.class)))
                 .willReturn(link);
 
         // when
-        underTest.create(organiserId);
+        underTest.create(organiser);
 
         // then
         verify(magicLinks).save(any(MagicLink.class));
@@ -75,18 +68,14 @@ class MagicLinkServiceImplTest {
     @Test
     void activate_ItShould_ActivateAndCloseLink_GivenOrganiserAndLinkId() {
         // given
-        UUID organiserId = UUID.randomUUID();
         UUID linkId = UUID.randomUUID();
         Organiser organiser = createTestOrganiser();
         MagicLink link = new MagicLink(organiser);
 
-        given(organiserService.getOrganiserById(organiserId))
-                .willReturn(organiser);
-
         given(magicLinks.findByIdAndOrganiser(linkId, organiser))
                 .willReturn(Optional.of(link));
         // when
-        underTest.activate(organiserId, linkId);
+        underTest.activate(organiser, linkId);
 
         // then
         ArgumentCaptor<MagicLink> magicLinkArgumentCaptor = ArgumentCaptor.forClass(MagicLink.class);
@@ -100,19 +89,15 @@ class MagicLinkServiceImplTest {
     @Test
     void activate_ItShouldThrow_NotFoundException_WhenNotExists() {
         // given
-        UUID organiserId = UUID.randomUUID();
         UUID linkId = UUID.randomUUID();
         Organiser organiser = createTestOrganiser();
-
-        given(organiserService.getOrganiserById(organiserId))
-                .willReturn(organiser);
 
         given(magicLinks.findByIdAndOrganiser(linkId, organiser))
                 .willReturn(Optional.empty());
 
         // when
         // then
-        assertThatThrownBy(() -> underTest.activate(organiserId, linkId))
+        assertThatThrownBy(() -> underTest.activate(organiser, linkId))
                 .isInstanceOf(NotFoundException.class)
                 .hasMessageContaining("Cannot find");
     }
@@ -120,22 +105,18 @@ class MagicLinkServiceImplTest {
     @Test
     void activate_ItShouldThrow_LinkException_WhenLinkIsExpired() {
         // given
-        UUID organiserId = UUID.randomUUID();
         UUID linkId = UUID.randomUUID();
         Organiser organiser = createTestOrganiser();
 
         MagicLink link = new MagicLink(organiser);
         link.setExpiresAt(Instant.now().minus(1, ChronoUnit.HOURS));
 
-        given(organiserService.getOrganiserById(organiserId))
-                .willReturn(organiser);
-
         given(magicLinks.findByIdAndOrganiser(linkId, organiser))
                 .willReturn(Optional.of(link));
 
         // when
         // then
-        assertThatThrownBy(() -> underTest.activate(organiserId, linkId))
+        assertThatThrownBy(() -> underTest.activate(organiser, linkId))
                 .isInstanceOf(LinkException.class)
                 .hasMessageContaining("The link expired");
     }
@@ -143,22 +124,18 @@ class MagicLinkServiceImplTest {
     @Test
     void activate_ItShouldThrow_LinkException_WhenLinkAlreadyActivated() {
         // given
-        UUID organiserId = UUID.randomUUID();
         UUID linkId = UUID.randomUUID();
         Organiser organiser = createTestOrganiser();
 
         MagicLink link = new MagicLink(organiser);
         link.setStatus(LinkStatus.CLOSED);
 
-        given(organiserService.getOrganiserById(organiserId))
-                .willReturn(organiser);
-
         given(magicLinks.findByIdAndOrganiser(linkId, organiser))
                 .willReturn(Optional.of(link));
 
         // when
         // then
-        assertThatThrownBy(() -> underTest.activate(organiserId, linkId))
+        assertThatThrownBy(() -> underTest.activate(organiser, linkId))
                 .isInstanceOf(LinkException.class)
                 .hasMessageContaining("The link has already been activated");
     }

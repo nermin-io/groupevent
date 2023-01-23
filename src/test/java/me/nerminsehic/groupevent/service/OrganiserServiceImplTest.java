@@ -20,6 +20,7 @@ import java.util.UUID;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
@@ -30,6 +31,9 @@ class OrganiserServiceImplTest {
     private Organisers organisers;
 
     @Mock
+    private MagicLinkService magicLinkService;
+
+    @Mock
     private Clock clock;
 
     private OrganiserService underTest;
@@ -37,7 +41,7 @@ class OrganiserServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        underTest = new OrganiserServiceImpl(organisers, clock);
+        underTest = new OrganiserServiceImpl(organisers, magicLinkService, clock);
     }
 
     @Test
@@ -231,7 +235,7 @@ class OrganiserServiceImplTest {
     }
 
     @Test
-    void findOrCreateOrganiser_ItShouldFindOrganiser_IfExists() {
+    void findOrCreateOrganiser_ItShould_FindOrganiser_IfExists() {
         // given
         String email = faker.internet().emailAddress();
         Organiser organiser = new Organiser(
@@ -252,7 +256,7 @@ class OrganiserServiceImplTest {
     }
 
     @Test
-    void findOrCreateOrganiser_ItShouldCreateNewOrganiser_IfNotExists() {
+    void findOrCreateOrganiser_ItShould_CreateNewOrganiser_IfNotExists() {
         // given
         String email = faker.internet().emailAddress();
         Organiser organiser = new Organiser(
@@ -279,5 +283,51 @@ class OrganiserServiceImplTest {
         assertThat(organiserArg).isEqualTo(organiser);
         assertThat(result.getFirst()).isEqualTo(organiser);
         assertThat(result.getSecond()).isTrue();
+    }
+
+    @Test
+    void attemptLogin_ItShould_CreateLink_IfOrganiserExists() {
+        // given
+        String email = faker.internet().emailAddress();
+        Organiser organiser = new Organiser(
+                faker.name().firstName(),
+                faker.name().lastName(),
+                email
+        );
+        given(organisers.findByEmailAddress(email))
+                .willReturn(Optional.of(organiser));
+
+        // when
+        boolean isCreated = underTest.attemptLogin(organiser);
+
+        // then
+        ArgumentCaptor<Organiser> organiserArgumentCaptor = ArgumentCaptor.forClass(Organiser.class);
+        verify(magicLinkService).create(organiserArgumentCaptor.capture());
+
+        assertThat(organiserArgumentCaptor.getValue()).isEqualTo(organiser);
+        assertThat(isCreated).isFalse();
+    }
+
+    @Test
+    void attemptLogin_ItShould_CreateLink_IfOrganiserNotExists() {
+        // given
+        String email = faker.internet().emailAddress();
+        Organiser organiser = new Organiser(
+                faker.name().firstName(),
+                faker.name().lastName(),
+                email
+        );
+        given(organisers.findByEmailAddress(email))
+                .willReturn(Optional.empty());
+
+        given(organisers.save(any(Organiser.class)))
+                .willReturn(organiser);
+
+        // when
+        boolean isCreated = underTest.attemptLogin(organiser);
+
+        // then
+        verify(magicLinkService).create(any(Organiser.class));
+        assertThat(isCreated).isTrue();
     }
 }

@@ -17,12 +17,10 @@ import java.util.UUID;
 public class MagicLinkServiceImpl implements MagicLinkService {
 
     private final MagicLinks magicLinks;
-    private final OrganiserService organiserService;
     private final MailService mailService;
 
     @Override
-    public MagicLink create(UUID organiserId) {
-        Organiser organiser = organiserService.getOrganiserById(organiserId);
+    public MagicLink create(Organiser organiser) {
         MagicLink link = new MagicLink(organiser);
 
         MagicLink persistedLink = magicLinks.save(link);
@@ -32,8 +30,7 @@ public class MagicLinkServiceImpl implements MagicLinkService {
     }
 
     @Override
-    public void activate(UUID organiserId, UUID linkId) {
-        Organiser organiser = organiserService.getOrganiserById(organiserId);
+    public void activate(Organiser organiser, UUID linkId) {
         MagicLink link = magicLinks.findByIdAndOrganiser(linkId, organiser)
                 .orElseThrow(() -> new NotFoundException(MagicLink.class, linkId));
 

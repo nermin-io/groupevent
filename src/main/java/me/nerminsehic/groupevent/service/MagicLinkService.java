@@ -1,12 +1,13 @@
 package me.nerminsehic.groupevent.service;
 
 import me.nerminsehic.groupevent.entity.MagicLink;
+import me.nerminsehic.groupevent.entity.Organiser;
 
 import java.util.UUID;
 
 public interface MagicLinkService {
 
-    MagicLink create(UUID organiserId);
+    MagicLink create(Organiser organiser);
 
-    void activate(UUID organiserId, UUID linkId);
+    void activate(Organiser organiser, UUID linkId);
 }

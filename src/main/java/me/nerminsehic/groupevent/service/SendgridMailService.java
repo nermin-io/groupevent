@@ -57,6 +57,7 @@ public class SendgridMailService implements MailService {
     public void sendLinkToOrganiser(Organiser organiser, MagicLink link) {
         Mail mail = useTemplateIdAndSender(magicLinkTemplateId, "Groupevent");
         SendMagicLinkDto magicLinkDto = new SendMagicLinkDto(
+                organiser.getId(),
                 organiser.getFirstName(),
                 organiser.getLastName(),
                 link.getId()

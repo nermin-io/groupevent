@@ -10,4 +10,6 @@ public interface OrganiserService extends Service<Organiser, UUID> {
     Organiser getOrganiserById(UUID id);
 
     Pair<Organiser, Boolean> findOrCreateOrganiser(Organiser organiser);
+
+    boolean attemptLogin(Organiser organiser);
 }

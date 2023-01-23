@@ -1,6 +1,7 @@
 package me.nerminsehic.groupevent.service;
 
 import lombok.RequiredArgsConstructor;
+import me.nerminsehic.groupevent.entity.MagicLink;
 import me.nerminsehic.groupevent.entity.Organiser;
 import me.nerminsehic.groupevent.exception.NotFoundException;
 import me.nerminsehic.groupevent.exception.UniqueConstraintException;
@@ -19,6 +20,7 @@ import java.util.UUID;
 public class OrganiserServiceImpl implements OrganiserService {
 
     private final Organisers organisers;
+    private final MagicLinkService magicLinkService;
     private final Clock clock;
 
     @Override
@@ -74,6 +76,16 @@ public class OrganiserServiceImpl implements OrganiserService {
                     organiser.setUpdatedAt(Instant.now(clock));
                     return Pair.of(organisers.save(organiser), true);
                 });
+    }
+
+    @Override
+    public boolean attemptLogin(Organiser organiser) {
+        Pair<Organiser, Boolean> result = findOrCreateOrganiser(organiser);
+
+        Organiser organiserResult = result.getFirst();
+        magicLinkService.create(organiserResult);
+
+        return result.getSecond();
     }
 
     private Organiser updateOrganiser(Organiser currentOrganiser, Organiser newOrganiser) {
