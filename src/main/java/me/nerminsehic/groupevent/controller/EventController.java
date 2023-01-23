@@ -34,6 +34,7 @@ public class EventController {
         return modelMapper.map(event, EventDto.class);
     }
 
+    @CrossOrigin(origins = {"http://localhost:3000", "https://groupevent.co"})
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public EventDto createEvent(@PathVariable UUID organiserId, @Validated @RequestBody EventDto eventDto) {
@@ -43,6 +44,7 @@ public class EventController {
         return convertToDto(eventService.create(organiserId, event, attendees));
     }
 
+    @CrossOrigin(origins = {"http://localhost:3000", "https://groupevent.co"})
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<EventDto> getEvents(@PathVariable UUID organiserId) {
@@ -52,6 +54,7 @@ public class EventController {
                 .toList();
     }
 
+    @CrossOrigin(origins = {"http://localhost:3000", "https://groupevent.co"})
     @GetMapping("{eventId}")
     @ResponseStatus(HttpStatus.OK)
     public EventDto getEventById(@PathVariable UUID organiserId, @PathVariable UUID eventId) {
@@ -61,6 +64,7 @@ public class EventController {
         return convertToDto(event);
     }
 
+    @CrossOrigin(origins = {"http://localhost:3000", "https://groupevent.co"})
     @DeleteMapping("{eventId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public String deleteEventById(@PathVariable UUID organiserId, @PathVariable UUID eventId) {
@@ -68,6 +72,7 @@ public class EventController {
         return "Successfully deleted event %s".formatted(eventId);
     }
 
+    @CrossOrigin(origins = {"http://localhost:3000", "https://groupevent.co"})
     @PutMapping("{eventId}")
     @ResponseStatus(HttpStatus.OK)
     public EventDto updateEventById(@PathVariable UUID organiserId, @PathVariable UUID eventId, @Validated @RequestBody EventDto eventDto) {
@@ -76,6 +81,7 @@ public class EventController {
         return convertToDto(eventService.updateById(organiserId, eventId, event));
     }
 
+    @CrossOrigin(origins = {"http://localhost:3000", "https://groupevent.co"})
     @PatchMapping("{eventId}/cancel")
     @ResponseStatus(HttpStatus.OK)
     public EventDto cancelEvent(@PathVariable UUID organiserId, @PathVariable UUID eventId, @Validated @RequestBody EventCancelDto eventCancelDto) {
@@ -84,6 +90,7 @@ public class EventController {
         return convertToDto(cancelledEvent);
     }
 
+    @CrossOrigin(origins = {"http://localhost:3000", "https://groupevent.co"})
     @PatchMapping("{eventId}/reschedule")
     @ResponseStatus(HttpStatus.OK)
     public EventDto rescheduleEvent(@PathVariable UUID organiserId, @PathVariable UUID eventId, @Validated @RequestBody EventDto eventDto) {

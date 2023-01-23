@@ -23,6 +23,7 @@ public class MagicLinkController {
     private final ModelMapper modelMapper;
 
     @PostMapping
+    @CrossOrigin(origins = {"http://localhost:3000", "https://groupevent.co"})
     @ResponseStatus(HttpStatus.CREATED)
     public String createLink(@PathVariable UUID organiserId) {
         Organiser organiser = organiserService.getOrganiserById(organiserId);
@@ -33,6 +34,7 @@ public class MagicLinkController {
         return "Successfully created a link";
     }
 
+    @CrossOrigin(origins = {"http://localhost:3000", "https://groupevent.co"})
     @PatchMapping("{linkId}")
     @ResponseStatus(HttpStatus.OK)
     public OrganiserDto activateLink(@PathVariable UUID organiserId, @PathVariable UUID linkId) {

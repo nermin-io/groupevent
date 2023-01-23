@@ -29,6 +29,7 @@ public class AddressController {
         return modelMapper.map(addressDto, Address.class);
     }
 
+    @CrossOrigin(origins = {"http://localhost:3000", "https://groupevent.co"})
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public AddressDto createAddress(@PathVariable UUID organiserId, @Validated @RequestBody AddressDto addressDto) {
@@ -37,6 +38,7 @@ public class AddressController {
         return convertToDto(addressService.create(organiserId, address));
     }
 
+    @CrossOrigin(origins = {"http://localhost:3000", "https://groupevent.co"})
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<AddressDto> getAddresses(@PathVariable UUID organiserId) {
@@ -46,6 +48,7 @@ public class AddressController {
                 .toList();
     }
 
+    @CrossOrigin(origins = {"http://localhost:3000", "https://groupevent.co"})
     @GetMapping("{addressId}")
     @ResponseStatus(HttpStatus.OK)
     public AddressDto getAddressById(@PathVariable UUID organiserId, @PathVariable UUID addressId) {
@@ -55,6 +58,7 @@ public class AddressController {
         return convertToDto(address);
     }
 
+    @CrossOrigin(origins = {"http://localhost:3000", "https://groupevent.co"})
     @DeleteMapping("{addressId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public String deleteAddressById(@PathVariable UUID organiserId, @PathVariable UUID addressId) {
@@ -62,6 +66,7 @@ public class AddressController {
         return "Successfully deleted address %s".formatted(addressId);
     }
 
+    @CrossOrigin(origins = {"http://localhost:3000", "https://groupevent.co"})
     @PutMapping("{addressId}")
     @ResponseStatus(HttpStatus.OK)
     public AddressDto updateAddressById(@PathVariable UUID organiserId, @PathVariable UUID addressId, @Validated @RequestBody AddressDto addressDto) {

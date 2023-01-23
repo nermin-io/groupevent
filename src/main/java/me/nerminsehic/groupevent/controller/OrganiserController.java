@@ -32,12 +32,14 @@ public class OrganiserController {
     }
 
     @PostMapping
+    @CrossOrigin(origins = {"http://localhost:3000", "https://groupevent.co"})
     @ResponseStatus(HttpStatus.CREATED)
     public OrganiserDto createOrganiser(@Validated @RequestBody OrganiserDto organiserDto) {
         Organiser organiser = convertToEntity(organiserDto);
         return convertToDto(organiserService.create(organiser));
     }
 
+    @CrossOrigin(origins = {"http://localhost:3000", "https://groupevent.co"})
     @PostMapping("find")
     public ResponseEntity<OrganiserDto> findOrCreateOrganiser(@Validated @RequestBody OrganiserDto reqOrganiserDto) {
         Organiser organiser = convertToEntity(reqOrganiserDto);
@@ -52,6 +54,7 @@ public class OrganiserController {
         return new ResponseEntity<>(organiserDto, HttpStatus.OK);
     }
 
+    @CrossOrigin(origins = {"http://localhost:3000", "https://groupevent.co"})
     @PostMapping("login")
     public ResponseEntity<String> organiserAttemptLogin(@Validated @RequestBody OrganiserDto reqOrganiserDto) {
         Organiser organiser = convertToEntity(reqOrganiserDto);
@@ -64,6 +67,7 @@ public class OrganiserController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
+    @CrossOrigin(origins = {"http://localhost:3000", "https://groupevent.co"})
     @GetMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
     public OrganiserDto getOrganiserById(@PathVariable UUID id) {
@@ -73,6 +77,7 @@ public class OrganiserController {
         return convertToDto(organiser);
     }
 
+    @CrossOrigin(origins = {"http://localhost:3000", "https://groupevent.co"})
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<OrganiserDto> getOrganisers() {
@@ -82,6 +87,7 @@ public class OrganiserController {
                 .toList();
     }
 
+    @CrossOrigin(origins = {"http://localhost:3000", "https://groupevent.co"})
     @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public String deleteOrganiserById(@PathVariable UUID id) {
@@ -89,6 +95,7 @@ public class OrganiserController {
         return "Successfully deleted organiser %s".formatted(id);
     }
 
+    @CrossOrigin(origins = {"http://localhost:3000", "https://groupevent.co"})
     @PutMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
     public OrganiserDto updateOrganiserById(@PathVariable UUID id, @Validated @RequestBody OrganiserDto organiserDto) {

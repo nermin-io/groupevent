@@ -28,6 +28,7 @@ public class InviteController {
         return modelMapper.map(invite, InviteDto.class);
     }
 
+    @CrossOrigin(origins = {"http://localhost:3000", "https://groupevent.co"})
     @PatchMapping("{eventId}")
     @ResponseStatus(HttpStatus.OK)
     public String respondInvite(@PathVariable UUID attendeeId, @PathVariable UUID eventId, @Validated @RequestBody InviteResponseDto responseDto) {
@@ -44,6 +45,7 @@ public class InviteController {
         return "Successfully responded to event %s".formatted(eventId);
     }
 
+    @CrossOrigin(origins = {"http://localhost:3000", "https://groupevent.co"})
     @GetMapping("{eventId}")
     @ResponseStatus(HttpStatus.OK)
     public InviteDto getInvite(@PathVariable UUID attendeeId, @PathVariable UUID eventId) {
