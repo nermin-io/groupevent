@@ -7,7 +7,8 @@ import Text from "../components/Text";
 import Box from "../components/Box";
 import { useMutation } from "react-query";
 import { Organiser } from "../clients/groupevent/types";
-import Proxy from '../clients/proxy';
+import Proxy from "../clients/proxy";
+import { useRouter } from 'next/router';
 
 interface Props {}
 
@@ -16,6 +17,7 @@ const GettingStarted: React.FC<Props> = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
+  const router = useRouter();
 
   const [isValid, setIsValid] = useState(false);
 
@@ -32,9 +34,14 @@ const GettingStarted: React.FC<Props> = () => {
     }
   }, [isChecked, firstName, lastName, email]);
 
-  const sendLinkMutation = useMutation((organiser: Organiser) => {
-    return Proxy.post("/links/create", organiser);
-  }, { onSuccess: (data) => console.log(data)});
+  const sendLinkMutation = useMutation(
+    (organiser: Organiser) => {
+      return Proxy.post("/links/create", organiser);
+    },
+    {
+      onSuccess: (res) => { router.push('/check-email') },
+    }
+  );
 
   const handleSubmit = () => {
     if (!isValid) return;
