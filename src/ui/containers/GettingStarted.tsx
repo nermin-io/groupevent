@@ -5,6 +5,9 @@ import Button from "../components/Button";
 import Input from "../components/Input";
 import Text from "../components/Text";
 import Box from "../components/Box";
+import { useMutation } from "react-query";
+import { Organiser } from "../clients/groupevent/types";
+import Groupevent from "../clients/groupevent";
 
 interface Props {}
 
@@ -28,6 +31,20 @@ const GettingStarted: React.FC<Props> = () => {
       setIsValid(false);
     }
   }, [isChecked, firstName, lastName, email]);
+
+  const sendLinkMutation = useMutation((organiser: Organiser) => {
+    return Groupevent.post("/organisers/login", organiser);
+  }, { onSuccess: (data) => console.log(data)});
+
+  const handleSubmit = () => {
+    if (!isValid) return;
+
+    sendLinkMutation.mutate({
+      first_name: firstName,
+      last_name: lastName,
+      email_address: email,
+    });
+  };
 
   return (
     <>
@@ -68,7 +85,14 @@ const GettingStarted: React.FC<Props> = () => {
         </Text>
       </Flex>
       <Box css={{ marginTop: 75 }}>
-        <Button disabled={!isValid}>Get Started</Button>
+        <Button
+          disabled={!isValid}
+          loading={sendLinkMutation.isLoading}
+          loadingText="Loading..."
+          onClick={handleSubmit}
+        >
+          Get Started
+        </Button>
       </Box>
     </>
   );
