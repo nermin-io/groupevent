@@ -6,6 +6,8 @@ import EventNameForm from "../../containers/EventNameForm";
 import EventLocationForm from "../../containers/EventLocationForm";
 import EventTimeForm from "../../containers/EventTimeForm";
 import EventAttendeesForm from "../../containers/EventAttendeesForm";
+import { withIronSessionSsr } from 'iron-session/next';
+import {sessionOptions} from "../../lib/session";
 
 const componentsList = [
     EventNameForm,
@@ -23,5 +25,22 @@ const CreateEvent: NextPage = () => {
     </>
   );
 };
+
+export const getServerSideProps = withIronSessionSsr(async function({req, res}) {
+    const { user } = req.session;
+
+    if(!user) {
+      return {
+        redirect: {
+          destination: '/',
+          permanent: false
+        }
+      }
+    }
+
+    return {
+      props: { session: user }
+    }
+  }, sessionOptions);
 
 export default CreateEvent;

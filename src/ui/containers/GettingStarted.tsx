@@ -39,7 +39,7 @@ const GettingStarted: React.FC<Props> = () => {
       return Proxy.post("/links/create", organiser);
     },
     {
-      onSuccess: (res) => { router.push('/check-email') },
+      onSuccess: async (res) => { await router.push('/check-email'); },
     }
   );
 

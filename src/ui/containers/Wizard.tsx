@@ -8,7 +8,7 @@ interface Props {
 }
 
 const Wizard: React.FC<Props> = ({ components }) => {
-  const [step, setStep] = useState(3);
+  const [step, setStep] = useState(0);
 
   const handlePreviousStep = () => {
       if(step === 0) return;
