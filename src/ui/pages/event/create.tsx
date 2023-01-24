@@ -6,17 +6,19 @@ import EventNameForm from "../../containers/EventNameForm";
 import EventLocationForm from "../../containers/EventLocationForm";
 import EventTimeForm from "../../containers/EventTimeForm";
 import EventAttendeesForm from "../../containers/EventAttendeesForm";
-import { withIronSessionSsr } from 'iron-session/next';
-import {sessionOptions} from "../../lib/session";
+import { withIronSessionSsr } from "iron-session/next";
+import { sessionOptions } from "../../lib/session";
+import useAuth from "../../hooks/auth";
 
 const componentsList = [
-    EventNameForm,
-    EventLocationForm,
-    EventTimeForm,
-    EventAttendeesForm
+  EventNameForm,
+  EventLocationForm,
+  EventTimeForm,
+  EventAttendeesForm,
 ];
 
 const CreateEvent: NextPage = () => {
+  const auth = useAuth();
   return (
     <>
       <Card>
@@ -26,21 +28,25 @@ const CreateEvent: NextPage = () => {
   );
 };
 
-export const getServerSideProps = withIronSessionSsr(async function({req, res}) {
-    const { user } = req.session;
+export const getServerSideProps = withIronSessionSsr(async function ({
+  req,
+  res,
+}) {
+  const { user } = req.session;
 
-    if(!user) {
-      return {
-        redirect: {
-          destination: '/',
-          permanent: false
-        }
-      }
-    }
-
+  if (!user) {
     return {
-      props: { session: user }
-    }
-  }, sessionOptions);
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: { session: user },
+  };
+},
+sessionOptions);
 
 export default CreateEvent;
