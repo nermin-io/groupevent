@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Box from "../components/Box";
 import Flex from "../components/Flex";
 import Label from "../components/Label";
@@ -11,6 +11,10 @@ interface Props {}
 
 const EventNameForm: React.FC<Props> = () => {
   const { state, setField } = useLocalStorage();
+
+  useEffect(() => {
+    setField('description', state.description);
+  }, []);
 
   return (
     <Box>
