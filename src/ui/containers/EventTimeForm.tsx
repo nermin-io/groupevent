@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Box from "../components/Box";
 import Flex from "../components/Flex";
 import Label from "../components/Label";
@@ -6,8 +6,10 @@ import Textarea from "../components/Textarea";
 import Text from "../components/Text";
 import DatePicker from "../components/DatePicker";
 import { roundToNearestN } from "../helpers";
+import {WizardComponentProps} from "./Wizard";
+import { isBefore } from 'date-fns';
 
-interface Props {}
+interface Props extends WizardComponentProps {}
 
 const getCurrentRoundedTime = (): Date => {
   const currentTime = new Date();
@@ -25,13 +27,21 @@ const getInitialTimeRange = (): Array<Date> => {
   return [timeFrom, timeTo];
 };
 
-const EventTimeForm: React.FC<Props> = () => {
+const EventTimeForm: React.FC<Props> = ({ setIsValid }) => {
   const [initialTimeFrom, initialTimeTo] = getInitialTimeRange();
 
   const [date, setDate] = useState(new Date());
   const [fromTime, setFromTime] = useState(initialTimeFrom);
   const [toTime, setToTime] = useState(initialTimeTo);
   const [agenda, setAgenda] = useState("");
+
+  useEffect(() => {
+    if(date && fromTime && toTime && isBefore(fromTime, toTime)) {
+      setIsValid(true);
+    } else {
+      setIsValid(false);
+    }
+  }, [date, fromTime, toTime]);
 
   return (
     <Box>

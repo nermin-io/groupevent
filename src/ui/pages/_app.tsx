@@ -12,8 +12,6 @@ export default function App({ Component, pageProps }: AppProps) {
   globalStyles();
   const queryClient = new QueryClient();
 
-  console.log(pageProps.session);
-
   const AuthenticatedComponent = () => (
       <AuthContextProvider session={pageProps.session}>
           <Component { ...pageProps} />

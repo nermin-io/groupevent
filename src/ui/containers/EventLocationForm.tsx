@@ -1,20 +1,29 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Box from "../components/Box";
 import Flex from "../components/Flex";
 import Label from "../components/Label";
 import Input from "../components/Input";
 import Textarea from "../components/Textarea";
 import Text from "../components/Text";
+import {WizardComponentProps} from "./Wizard";
 
-interface Props {}
+interface Props extends WizardComponentProps {}
 
-const EventLocationForm: React.FC<Props> = () => {
+const EventLocationForm: React.FC<Props> = ({ setIsValid }) => {
 
   const [streetAddress, setStreetAddress] = useState("");
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
   const [postCode, setPostCode] = useState("");
   const [notes, setNotes] = useState("");
+
+  useEffect(() => {
+    if(streetAddress.length === 0 || city.length === 0 || state.length === 0 || postCode.length === 0) {
+      setIsValid(false);
+    } else {
+      setIsValid(true);
+    }
+  }, [streetAddress, city, state, postCode]);
 
   return (
     <Box>

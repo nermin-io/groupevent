@@ -1,15 +1,27 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Box from "../components/Box";
 import Flex from "../components/Flex";
 import Label from "../components/Label";
 import Text from "../components/Text";
 import ListInput, {ListInputOnNewValueHandler, ListInputOnRemoveValueHandler } from "../components/ListInput";
+import {WizardComponentProps} from "./Wizard";
 
-interface Props {}
+export const MIN_ATTENDEES = 1;
+export const MAX_ATTENDEES = 250;
 
-const EventAttendeesForm: React.FC<Props> = () => {
+interface Props extends WizardComponentProps {}
+
+const EventAttendeesForm: React.FC<Props> = ({ setIsValid }) => {
 
   const [attendees, setAttendees] = useState<Array<string>>([]);
+
+  useEffect(() => {
+    if(attendees.length >= MIN_ATTENDEES && attendees.length <= MAX_ATTENDEES) {
+      setIsValid(true);
+    } else {
+      setIsValid(false);
+    }
+  }, [attendees]);
 
   const addValueHandler: ListInputOnNewValueHandler = (values: Array<string>) => {
       setAttendees(currentAttendees => [...currentAttendees, ...values]);
