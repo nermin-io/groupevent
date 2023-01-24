@@ -1,34 +1,22 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Box from "../components/Box";
 import Flex from "../components/Flex";
 import Label from "../components/Label";
 import Text from "../components/Text";
 import ListInput, {ListInputOnNewValueHandler, ListInputOnRemoveValueHandler } from "../components/ListInput";
-import {WizardComponentProps} from "./Wizard";
+import useLocalStorage from "../hooks/storage";
 
-export const MIN_ATTENDEES = 1;
-export const MAX_ATTENDEES = 250;
+interface Props  {}
 
-interface Props extends WizardComponentProps {}
-
-const EventAttendeesForm: React.FC<Props> = ({ setIsValid }) => {
-
-  const [attendees, setAttendees] = useState<Array<string>>([]);
-
-  useEffect(() => {
-    if(attendees.length >= MIN_ATTENDEES && attendees.length <= MAX_ATTENDEES) {
-      setIsValid(true);
-    } else {
-      setIsValid(false);
-    }
-  }, [attendees]);
+const EventAttendeesForm: React.FC<Props> = () => {
+  const { state, setField } = useLocalStorage();
 
   const addValueHandler: ListInputOnNewValueHandler = (values: Array<string>) => {
-      setAttendees(currentAttendees => [...currentAttendees, ...values]);
+      setField('attendees', [...state.attendees, ...values]);
   }
 
   const removeValueHandler: ListInputOnRemoveValueHandler = (value: string) => {
-      setAttendees(currentAttendees => currentAttendees.filter(attendee => attendee !== value));
+      setField('attendees', state.attendees.filter(attendee => attendee !== value));
   }
 
   return (
@@ -39,7 +27,7 @@ const EventAttendeesForm: React.FC<Props> = ({ setIsValid }) => {
       <Flex css={{ flexDirection: "column", marginBottom: 8 }}>
         <Box>
           <Label htmlFor="attendees">Invite List</Label>
-            <ListInput values={attendees} onNewValue={addValueHandler} onRemoveValue={removeValueHandler} />
+            <ListInput values={state.attendees} onNewValue={addValueHandler} onRemoveValue={removeValueHandler} />
         </Box>
       </Flex>
     </Box>

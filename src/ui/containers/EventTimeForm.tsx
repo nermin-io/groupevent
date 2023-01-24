@@ -1,47 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Box from "../components/Box";
 import Flex from "../components/Flex";
 import Label from "../components/Label";
 import Textarea from "../components/Textarea";
 import Text from "../components/Text";
 import DatePicker from "../components/DatePicker";
-import { roundToNearestN } from "../helpers";
-import {WizardComponentProps} from "./Wizard";
-import { isBefore } from 'date-fns';
+import useLocalStorage from "../hooks/storage";
 
-interface Props extends WizardComponentProps {}
+interface Props {}
 
-const getCurrentRoundedTime = (): Date => {
-  const currentTime = new Date();
-  const roundedMinutes = roundToNearestN(currentTime.getMinutes(), 10);
-
-  currentTime.setMinutes(roundedMinutes);
-  return currentTime;
-};
-
-const getInitialTimeRange = (): Array<Date> => {
-  const timeFrom = getCurrentRoundedTime();
-  const timeTo = getCurrentRoundedTime();
-  timeTo.setMinutes(timeTo.getMinutes() + 15);
-
-  return [timeFrom, timeTo];
-};
-
-const EventTimeForm: React.FC<Props> = ({ setIsValid }) => {
-  const [initialTimeFrom, initialTimeTo] = getInitialTimeRange();
-
-  const [date, setDate] = useState(new Date());
-  const [fromTime, setFromTime] = useState(initialTimeFrom);
-  const [toTime, setToTime] = useState(initialTimeTo);
-  const [agenda, setAgenda] = useState("");
-
-  useEffect(() => {
-    if(date && fromTime && toTime && isBefore(fromTime, toTime)) {
-      setIsValid(true);
-    } else {
-      setIsValid(false);
-    }
-  }, [date, fromTime, toTime]);
+const EventTimeForm: React.FC<Props> = () => {
+  const { state, setField } = useLocalStorage();
 
   return (
     <Box>
@@ -52,8 +21,8 @@ const EventTimeForm: React.FC<Props> = ({ setIsValid }) => {
         <Box>
           <Label htmlFor="date">Date</Label>
           <DatePicker
-            selected={date}
-            onChange={(date: Date) => setDate(date)}
+            selected={state.date}
+            onChange={(date: Date) => setField('date', date)}
             id="date"
           />
         </Box>
@@ -61,8 +30,8 @@ const EventTimeForm: React.FC<Props> = ({ setIsValid }) => {
           <Box css={{ width: "100%" }}>
             <Label htmlFor="fromTime">From</Label>
             <DatePicker
-              selected={fromTime}
-              onChange={(date: Date) => setFromTime(date)}
+              selected={state.timeFrom}
+              onChange={(date: Date) => setField('timeFrom', date)}
               type="time"
               id="fromTime"
             />
@@ -70,8 +39,8 @@ const EventTimeForm: React.FC<Props> = ({ setIsValid }) => {
           <Box css={{ width: "100%" }}>
             <Label htmlFor="toTime">To</Label>
             <DatePicker
-              selected={toTime}
-              onChange={(date: Date) => setToTime(date)}
+              selected={state.timeTo}
+              onChange={(date: Date) => setField('timeTo', date)}
               type="time"
               id="toTime"
             />
@@ -82,8 +51,8 @@ const EventTimeForm: React.FC<Props> = ({ setIsValid }) => {
           <Textarea
             placeholder="If your event requires an agenda, provide it here."
             id="agenda"
-            value={agenda}
-            onChange={(e) => setAgenda(e.target.value)}
+            value={state.agenda}
+            onChange={(e) => setField('agenda', e.target.value)}
           />
         </Box>
       </Flex>

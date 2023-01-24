@@ -3,6 +3,7 @@ import Layout from "../components/layout/Layout";
 import { globalStyles } from "../common/global";
 import { QueryClient, QueryClientProvider } from "react-query";
 import AuthContextProvider from "../providers/AuthContextProvider";
+import LocalStorageProvider from "../providers/LocalStorageProvider";
 
 type AppProps<P = any> = {
   pageProps: P;
@@ -13,16 +14,22 @@ export default function App({ Component, pageProps }: AppProps) {
   const queryClient = new QueryClient();
 
   const AuthenticatedComponent = () => (
-      <AuthContextProvider session={pageProps.session}>
-          <Component { ...pageProps} />
-      </AuthContextProvider>
+    <AuthContextProvider session={pageProps.session}>
+      <Component {...pageProps} />
+    </AuthContextProvider>
   );
-  
+
   return (
     <QueryClientProvider client={queryClient}>
-      <Layout>
-          { pageProps.session ? <AuthenticatedComponent /> : <Component {...pageProps} /> }
-      </Layout>
+      <LocalStorageProvider>
+        <Layout>
+          {pageProps.session ? (
+            <AuthenticatedComponent />
+          ) : (
+            <Component {...pageProps} />
+          )}
+        </Layout>
+      </LocalStorageProvider>
     </QueryClientProvider>
   );
 }
