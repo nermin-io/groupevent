@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import Box from "../components/Box";
 import Flex from "../components/Flex";
 import Label from "../components/Label";
@@ -9,7 +9,7 @@ import useLocalStorage from "../hooks/storage";
 interface Props  {}
 
 const EventAttendeesForm: React.FC<Props> = () => {
-  const { state, setField } = useLocalStorage();
+  const { state, setField, persist } = useLocalStorage();
 
   const addValueHandler: ListInputOnNewValueHandler = (values: Array<string>) => {
       setField('attendees', [...state.attendees, ...values]);
@@ -18,6 +18,10 @@ const EventAttendeesForm: React.FC<Props> = () => {
   const removeValueHandler: ListInputOnRemoveValueHandler = (value: string) => {
       setField('attendees', state.attendees.filter(attendee => attendee !== value));
   }
+
+  useEffect(() => {
+    persist();
+  }, [state.attendees]);
 
   return (
     <Box>
