@@ -19,6 +19,7 @@ const componentsList = [
 
 const CreateEvent: NextPage = () => {
   const auth = useAuth();
+
   return (
     <>
       <Card>
@@ -44,7 +45,9 @@ export const getServerSideProps = withIronSessionSsr(async function ({
   }
 
   return {
-    props: { session: user },
+    props: {
+      session: user,
+    },
   };
 },
 sessionOptions);

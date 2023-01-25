@@ -8,7 +8,7 @@ interface Props {
   components: Array<React.FC>;
 }
 
-const Wizard: React.FC<Props> = ({ components }) => {
+const Wizard: React.FC<Props> = ({ components}) => {
   const [step, setStep] = useState(0);
   const { persist } = useLocalStorage();
 

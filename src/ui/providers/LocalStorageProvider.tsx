@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import LocalStorageContext, { DEFAULT_STATE, StorageState } from "../context/storage";
 import { formatISO } from 'date-fns';
 
@@ -33,6 +33,11 @@ const getInitialState = () => {
 
 const LocalStorageProvider: React.FC<Props> = ({ children }) => {
   const [state, setState] = useState(getInitialState);
+  const [renderChildren, setRenderChildren] = useState(false);
+
+  useEffect(() => {
+    setRenderChildren(true);
+  }, []);
 
   const persist = () => {
     localStorage.setItem("state", JSON.stringify(state, serializer));
@@ -60,7 +65,7 @@ const LocalStorageProvider: React.FC<Props> = ({ children }) => {
 
   return (
     <LocalStorageContext.Provider value={context}>
-      {children}
+      {renderChildren && children}
     </LocalStorageContext.Provider>
   );
 };
