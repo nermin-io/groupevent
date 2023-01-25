@@ -1,16 +1,35 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Box from "../components/Box";
 import Flex from "../components/Flex";
 import Button from "../components/Button";
 import useLocalStorage from "../hooks/storage";
+import {StorageState} from "../context/storage";
+import { isBefore } from 'date-fns';
+
+const INITIAL_STEP = 0;
 
 interface Props {
   components: Array<React.FC>;
 }
 
+const isStepValid = (state: StorageState, step: number) => {
+  switch(step) {
+    case 0:
+      return state.name.length > 0 && state.description.length > 0;
+    case 1:
+      return state.address.length > 0 && state.city.length > 0 && state.state.length > 0 && state.postCode.length > 0;
+    case 2:
+      return state.date && state.timeFrom && state.timeTo && isBefore(state.timeFrom, state.timeTo);
+    case 3:
+      return state.attendees.length >= 1;
+    default: return false;
+  }
+}
+
 const Wizard: React.FC<Props> = ({ components}) => {
-  const [step, setStep] = useState(0);
-  const { persist } = useLocalStorage();
+  const [step, setStep] = useState(INITIAL_STEP);
+  const { persist, state } = useLocalStorage();
+  const [isValid, setIsValid] = useState(isStepValid(state, INITIAL_STEP));
 
   const handlePreviousStep = () => {
     if (step === 0) return;
@@ -24,6 +43,10 @@ const Wizard: React.FC<Props> = ({ components}) => {
     persist();
   };
 
+  useEffect(() => {
+    setIsValid(isStepValid(state, step));
+  }, [state, step]);
+
   const StepComponent = components[step];
 
   return (
@@ -35,7 +58,7 @@ const Wizard: React.FC<Props> = ({ components}) => {
             Go Back
           </Button>
         )}
-        <Button onClick={handleNextStep} >
+        <Button onClick={handleNextStep} disabled={!isValid}>
           {step === components.length - 1 ? "Send Invites" : "Continue"}
         </Button>
       </Flex>
