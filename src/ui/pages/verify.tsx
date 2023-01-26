@@ -5,7 +5,7 @@ import Flex from "../components/Flex";
 import Text from "../components/Text";
 import Groupevent from "../clients/groupevent";
 import { sessionOptions } from "../lib/session";
-import {withIronSessionApiRoute, withIronSessionSsr} from "iron-session/next";
+import {withIronSessionSsr} from "iron-session/next";
 
 interface PageProps {
   error: {

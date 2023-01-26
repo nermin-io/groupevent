@@ -5,6 +5,12 @@ import Button from "../components/Button";
 import useLocalStorage from "../hooks/storage";
 import {StorageState} from "../context/storage";
 import { isBefore } from 'date-fns';
+import { useMutation } from 'react-query';
+import Proxy from "../clients/proxy";
+import useAuth from "../hooks/auth";
+import { useRouter } from 'next/router';
+import { Event } from '../clients/groupevent/types';
+import { format } from 'date-fns';
 
 const INITIAL_STEP = 0;
 
@@ -28,8 +34,12 @@ const isStepValid = (state: StorageState, step: number) => {
 
 const Wizard: React.FC<Props> = ({ components}) => {
   const [step, setStep] = useState(INITIAL_STEP);
-  const { persist, state } = useLocalStorage();
+  const { persist, state, clear } = useLocalStorage();
   const [isValid, setIsValid] = useState(isStepValid(state, INITIAL_STEP));
+  const [isRouting, setIsRouting] = useState(false);
+  const router = useRouter();
+
+  const auth = useAuth();
 
   const handlePreviousStep = () => {
     if (step === 0) return;
@@ -38,14 +48,54 @@ const Wizard: React.FC<Props> = ({ components}) => {
   };
 
   const handleNextStep = () => {
-    if (step === components.length - 1) return;
-    setStep((currentStep) => currentStep + 1);
-    persist();
+    if (step === components.length - 1) {
+      createEvent();
+    } else {
+      setStep((currentStep) => currentStep + 1);
+      persist();
+    }
   };
+
+  const createEvent = () => {
+    const event = {
+      name: state.name,
+      description: state.description,
+      address: {
+        address: state.address,
+        city: state.city,
+        post_code: state.postCode,
+        state: state.state,
+        notes: state.notes
+      },
+      scheduled_date: format(state.date, 'yyyy-MM-dd'),
+      time_from: format(state.timeFrom, 'HH:mm'),
+      time_to: format(state.timeTo, 'HH:mm'),
+      agenda: state.agenda,
+      attendees: state.attendees
+    };
+
+    mutation.mutate(event);
+  }
 
   useEffect(() => {
     setIsValid(isStepValid(state, step));
   }, [state, step]);
+
+  const mutation = useMutation(
+    (event: Event) => {
+      return Proxy.post("/events", {
+        organiser: auth.session?.id,
+        data: event
+      });
+    },
+    {
+      onSuccess: async (res) => {
+        clear();
+        setIsRouting(true);
+        await router.push('/event/success');
+      },
+    }
+  );
 
   const StepComponent = components[step];
 
@@ -58,7 +108,7 @@ const Wizard: React.FC<Props> = ({ components}) => {
             Go Back
           </Button>
         )}
-        <Button onClick={handleNextStep} disabled={!isValid}>
+        <Button onClick={handleNextStep} disabled={!isValid} loading={mutation.isLoading || isRouting} loadingText="Creating event...">
           {step === components.length - 1 ? "Send Invites" : "Continue"}
         </Button>
       </Flex>

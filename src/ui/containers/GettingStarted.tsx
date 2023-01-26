@@ -36,7 +36,7 @@ const GettingStarted: React.FC<Props> = () => {
 
   const sendLinkMutation = useMutation(
     (organiser: Organiser) => {
-      return Proxy.post("/links/create", organiser);
+      return Proxy.post("/links", organiser);
     },
     {
       onSuccess: async (res) => { await router.push('/check-email'); },

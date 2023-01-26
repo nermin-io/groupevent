@@ -31,7 +31,7 @@ const EventTimeForm: React.FC<Props> = () => {
             <Label htmlFor="fromTime">From</Label>
             <DatePicker
               selected={state.timeFrom}
-              onChange={(date: Date) => setField('timeFrom', date)}
+              onChange={(date: Date) => { console.log(date); setField('timeFrom', date);}}
               type="time"
               id="fromTime"
             />
@@ -40,7 +40,7 @@ const EventTimeForm: React.FC<Props> = () => {
             <Label htmlFor="toTime">To</Label>
             <DatePicker
               selected={state.timeTo}
-              onChange={(date: Date) => setField('timeTo', date)}
+              onChange={(date: Date) => {console.log(date); setField('timeTo', date);}}
               type="time"
               id="toTime"
             />
