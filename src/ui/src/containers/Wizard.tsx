@@ -35,7 +35,8 @@ const isStepValid = (state: StorageState, step: number) => {
         state.date &&
         state.timeFrom &&
         state.timeTo &&
-        isBefore(state.timeFrom, state.timeTo)
+        isBefore(state.timeFrom, state.timeTo) &&
+        state.agenda.length > 0
       );
     case 3:
       return state.attendees.length >= 1;

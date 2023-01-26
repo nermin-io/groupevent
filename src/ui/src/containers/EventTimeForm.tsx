@@ -49,7 +49,7 @@ const EventTimeForm: React.FC<Props> = () => {
         <Box>
           <Label htmlFor="agenda">Agenda</Label>
           <Textarea
-            placeholder="If your event requires an agenda, provide it here."
+            placeholder="Provide a rough agenda for your event."
             id="agenda"
             value={state.agenda}
             onChange={(e) => setField('agenda', e.target.value)}
