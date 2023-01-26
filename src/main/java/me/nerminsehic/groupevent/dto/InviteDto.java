@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import me.nerminsehic.groupevent.entity.InviteResponse;
 
 @Data
 @ToString
@@ -21,4 +22,10 @@ public class InviteDto {
     @NotNull
     @JsonProperty("attendee")
     private AttendeeDto attendee;
+
+    @JsonProperty("response")
+    private InviteResponse response;
+
+    @JsonProperty("message")
+    private String message;
 }

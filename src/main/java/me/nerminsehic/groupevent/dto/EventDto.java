@@ -32,6 +32,9 @@ public class EventDto {
     @JsonProperty("address")
     private AddressDto address;
 
+    @JsonProperty("organiser")
+    private OrganiserDto organiser;
+
     @NotBlank(message = "required field")
     @JsonProperty("name")
     private String name;
