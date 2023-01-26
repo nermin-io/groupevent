@@ -34,6 +34,15 @@ const EventResponseForm: React.FC<Props> = ({ invite, answer }) => {
   const [message, setMessage] = useState(invite.message || "");
   const [firstName, setFirstName] = useState(invite.attendee.first_name || '');
   const [lastName, setLastName] = useState(invite.attendee.last_name || '');
+  const [valid, setValid] = useState(false);
+
+  useEffect(() => {
+    if(response && message.length > 0 && firstName.length > 0 && lastName.length > 0) {
+      setValid(true);
+    } else {
+      setValid(false);
+    }
+  }, [response, message, firstName, lastName]);
 
   return (
     <>
@@ -66,7 +75,7 @@ const EventResponseForm: React.FC<Props> = ({ invite, answer }) => {
             onChange={(e) => setMessage(e.target.value)}
           />
         </Box>
-        <Button>Send</Button>
+        <Button disabled={!valid}>Send</Button>
       </Flex>
     </>
   );
