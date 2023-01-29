@@ -18,7 +18,7 @@ public class SendCancellationEmailDto {
     private AttendeeDto attendee;
 
     @JsonProperty("cancel_message")
-    private String cancelMessage;
+    private String cancelMessageHtml;
 
     @JsonProperty("event_id")
     private UUID eventId;
@@ -27,7 +27,7 @@ public class SendCancellationEmailDto {
     private String eventName;
 
     @JsonProperty("event_description")
-    private String eventDescription;
+    private String eventDescriptionHtml;
 
     @JsonProperty("organiser")
     private OrganiserDto organiser;
@@ -40,9 +40,9 @@ public class SendCancellationEmailDto {
                 attendee.getEmailAddress()
         );
         this.organiser = new OrganiserDto(event.getOrganiser());
-        this.cancelMessage = event.getCancelMessage();
+        this.cancelMessageHtml = event.getCancelMessage().replaceAll("(\r\n|\n)", "<br>");
         this.eventId = event.getId();
         this.eventName = event.getName();
-        this.eventDescription = event.getDescription();
+        this.eventDescriptionHtml = event.getDescription().replaceAll("(\r\n|\n)", "<br>");
     }
 }

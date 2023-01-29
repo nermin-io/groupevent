@@ -20,7 +20,7 @@ public class InviteResponseEmailDto {
     private InviteResponse response;
 
     @JsonProperty("message")
-    private String message;
+    private String messageHtml;
 
     @JsonProperty("event_id")
     private UUID eventId;
@@ -29,7 +29,7 @@ public class InviteResponseEmailDto {
     private String eventName;
 
     @JsonProperty("event_description")
-    private String eventDescription;
+    private String eventDescriptionHtml;
 
     @JsonProperty("organiser")
     private OrganiserDto organiser;
@@ -40,7 +40,7 @@ public class InviteResponseEmailDto {
         Organiser organiser = event.getOrganiser();
 
         this.response = invite.getResponse();
-        this.message = invite.getMessage();
+        this.messageHtml = invite.getMessage().replaceAll("(\r\n|\n)", "<br>");
 
         this.attendee = new AttendeeDto(
                 attendee.getId(),
@@ -50,7 +50,7 @@ public class InviteResponseEmailDto {
         );
         this.eventId = event.getId();
         this.eventName = event.getName();
-        this.eventDescription = event.getDescription();
+        this.eventDescriptionHtml = event.getDescription().replaceAll("(\r\n|\n)", "<br>");
         this.organiser = new OrganiserDto(organiser);
     }
 }

@@ -35,7 +35,7 @@ public class SendInvitesEmailDto {
     private String name;
 
     @JsonProperty("description")
-    private String description;
+    private String descriptionHtml;
 
     @JsonProperty("scheduled_date")
     private String scheduledDate;
@@ -47,7 +47,7 @@ public class SendInvitesEmailDto {
     private String timeTo;
 
     @JsonProperty("agenda")
-    private String agenda;
+    private String agendaHtml;
 
     @JsonProperty("duration_in_hours")
     private long durationInHours;
@@ -66,8 +66,8 @@ public class SendInvitesEmailDto {
         this.emailAddress = attendee.getEmailAddress();
         this.eventId = event.getId();
         this.name = event.getName();
-        this.description = event.getDescription();
-        this.agenda = event.getAgenda();
+        this.descriptionHtml = event.getDescription().replaceAll("(\r\n|\n)", "<br>");
+        this.agendaHtml = event.getAgenda().replaceAll("(\r\n|\n)", "<br>");
         this.scheduledDate = event.getScheduledDate().format(DATE_FORMAT);
         this.timeFrom = event.getTimeFrom().format(TIME_FORMAT);
         this.timeTo = event.getTimeTo().format(TIME_FORMAT);
@@ -82,7 +82,7 @@ public class SendInvitesEmailDto {
                 address.getCity(),
                 address.getState(),
                 address.getPostCode(),
-                address.getNotes()
+                address.getNotes().replaceAll("(\r\n|\n)", "<br>")
         );
 
         Organiser organiser = event.getOrganiser();

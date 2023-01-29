@@ -30,7 +30,7 @@ public class SendEventConfirmationEmailDto {
     private String name;
 
     @JsonProperty("description")
-    private String description;
+    private String descriptionHtml;
 
     @JsonProperty("scheduled_date")
     private String scheduledDate;
@@ -42,7 +42,7 @@ public class SendEventConfirmationEmailDto {
     private String timeTo;
 
     @JsonProperty("agenda")
-    private String agenda;
+    private String agendaHtml;
 
     @JsonProperty("duration_in_hours")
     private long durationInHours;
@@ -59,8 +59,8 @@ public class SendEventConfirmationEmailDto {
     public SendEventConfirmationEmailDto(Event event, String mapLink, String directionsLink) {
         this.eventId = event.getId();
         this.name = event.getName();
-        this.description = event.getDescription();
-        this.agenda = event.getAgenda();
+        this.descriptionHtml = event.getDescription().replaceAll("(\r\n|\n)", "<br>");
+        this.agendaHtml = event.getAgenda().replaceAll("(\r\n|\n)", "<br>");
         this.scheduledDate = event.getScheduledDate().format(DATE_FORMAT);
         this.timeFrom = event.getTimeFrom().format(TIME_FORMAT);
         this.timeTo = event.getTimeTo().format(TIME_FORMAT);
@@ -75,7 +75,7 @@ public class SendEventConfirmationEmailDto {
                 address.getCity(),
                 address.getState(),
                 address.getPostCode(),
-                address.getNotes()
+                address.getNotes().replaceAll("(\r\n|\n)", "<br>")
         );
 
         Organiser organiser = event.getOrganiser();
