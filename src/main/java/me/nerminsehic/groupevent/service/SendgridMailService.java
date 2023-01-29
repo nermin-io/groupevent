@@ -75,7 +75,10 @@ public class SendgridMailService implements MailService {
     @Override
     public void sendEventConfirmationToOrganiser(Event event) {
         Mail mail = useTemplateIdAndSender(eventConfirmationTemplateId, "Groupevent");
-        SendEventConfirmationEmailDto sendConfirmationDto = new SendEventConfirmationEmailDto(event);
+
+        String mapLink = maps.create(event.getAddress());
+        String directionsLink = directions.getDirectionsLink(event.getAddress());
+        SendEventConfirmationEmailDto sendConfirmationDto = new SendEventConfirmationEmailDto(event, mapLink, directionsLink);
         Organiser organiser = event.getOrganiser();
 
         Personalization personalization = createPersonalization(
