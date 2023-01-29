@@ -4,15 +4,15 @@ import Card from "@/components/Card";
 import Text from "@/components/Text";
 import Groupevent from "@/clients/groupevent";
 import Flex from "@/components/Flex";
-import {Invite, InviteResponse} from "@/clients/groupevent/types";
+import { EventStatus, Invite } from "@/clients/groupevent/types";
 import EventResponseForm from "@/containers/EventResponseForm";
 
 interface PageProps {
   error?: {
     message: string;
   };
-  invite: Invite,
-  answer?: string
+  invite: Invite;
+  answer?: string;
 }
 
 interface ErrorProps {
@@ -59,12 +59,23 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
       `attendees/${attendee}/invites/${event}`
     );
 
-    if(response.status === 200) return {
+    if(response.status === 200) {
+      const invite = response.data as Invite;
+      if(invite.event.status === EventStatus.CANCELLED) return {
+        props: {
+          error: {
+            message: 'This event has been cancelled'
+          }
+        }
+      }
+
+      return {
         props: {
           invite: response.data as Invite,
           answer: answer || null
         }
       }
+    }
 
     return {
       props: {
