@@ -37,7 +37,7 @@ public class EventController {
     @CrossOrigin(origins = {"http://localhost:3000", "https://groupevent.co"})
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public EventDto createEvent(@PathVariable UUID organiserId, @Validated @RequestBody EventDto eventDto) {
+    public EventDto createEvent(@PathVariable UUID organiserId, @Validated(EventDto.FullValidation.class) @RequestBody EventDto eventDto) {
         Event event = convertToEntity(eventDto);
         Set<Attendee> attendees = attendeeService.findOrCreateAttendeesByEmail(eventDto.getAttendees());
 
@@ -75,7 +75,7 @@ public class EventController {
     @CrossOrigin(origins = {"http://localhost:3000", "https://groupevent.co"})
     @PutMapping("{eventId}")
     @ResponseStatus(HttpStatus.OK)
-    public EventDto updateEventById(@PathVariable UUID organiserId, @PathVariable UUID eventId, @Validated @RequestBody EventDto eventDto) {
+    public EventDto updateEventById(@PathVariable UUID organiserId, @PathVariable UUID eventId, @Validated(EventDto.FullValidation.class) @RequestBody EventDto eventDto) {
         Event event = convertToEntity(eventDto);
 
         return convertToDto(eventService.updateById(organiserId, eventId, event));

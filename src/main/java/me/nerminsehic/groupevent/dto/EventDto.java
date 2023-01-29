@@ -24,10 +24,12 @@ import java.util.UUID;
 @NoArgsConstructor
 public class EventDto {
 
+    public interface FullValidation {}
+
     @JsonProperty("id")
     private UUID id;
 
-    @NotNull
+    @NotNull(groups = {FullValidation.class})
     @Valid
     @JsonProperty("address")
     private AddressDto address;
@@ -35,11 +37,11 @@ public class EventDto {
     @JsonProperty("organiser")
     private OrganiserDto organiser;
 
-    @NotBlank(message = "required field")
+    @NotBlank(message = "required field", groups = {FullValidation.class})
     @JsonProperty("name")
     private String name;
 
-    @NotBlank(message = "required field")
+    @NotBlank(message = "required field", groups = {FullValidation.class})
     @JsonProperty("description")
     private String description;
 
@@ -62,12 +64,12 @@ public class EventDto {
     @JsonProperty("status")
     private EventStatus status;
 
-    @NotNull(message = "required field")
-    @Size(min = 1, max = 300, message = "Event must have between 1 - 300 attendees")
+    @NotNull(message = "required field", groups={FullValidation.class})
+    @Size(min = 1, max = 300, message = "Event must have between 1 - 300 attendees", groups = {FullValidation.class})
     @JsonProperty("attendees")
     private Set<
-            @NotNull
-            @Pattern(regexp = "^[a-zA-Z0-9_!#$%&’*+\\/=?`{|}~^.-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z0-9.-]+$", message = "not a valid email address")
+            @NotNull(groups = {FullValidation.class})
+            @Pattern(regexp = "^[a-zA-Z0-9_!#$%&’*+\\/=?`{|}~^.-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z0-9.-]+$", message = "not a valid email address", groups={FullValidation.class})
                     String> attendees = new HashSet<>();
 
     @JsonProperty("created_at")
