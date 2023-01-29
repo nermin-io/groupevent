@@ -59,3 +59,10 @@ export type Invite = {
   response: string;
   message?: string;
 };
+
+export type EventResponse = {
+  first_name: string;
+  last_name: string;
+  response: InviteResponse;
+  message: string;
+};

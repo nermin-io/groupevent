@@ -59,8 +59,6 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
       `attendees/${attendee}/invites/${event}`
     );
 
-    console.log(response.data);
-
     if(response.status === 200) return {
         props: {
           invite: response.data as Invite,
