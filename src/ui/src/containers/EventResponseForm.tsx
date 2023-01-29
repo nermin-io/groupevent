@@ -11,12 +11,20 @@ import Spacer from "@/components/layout/Spacer";
 import Button from "@/components/Button";
 import {useMutation} from 'react-query';
 import Proxy from "@/clients/proxy";
-
+import Notification from "@/components/Notification";
+import { styled } from '@/stitches.config';
+import { isBefore } from 'date-fns';
 
 interface ResponseProps {
   invite: Invite;
   response: InviteResponse;
 }
+
+const FormContainer = styled(Box, {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: 10
+});
 
 const ResponseMessage: React.FC<ResponseProps> = ({invite, response}) => {
   return (
@@ -52,6 +60,17 @@ const getOptionLabel = (response: InviteResponse) => {
 
 const parseResponse = (response: string) => {
   return response === "GOING" ? InviteResponse.GOING : InviteResponse.NOT_GOING;
+}
+
+const isCancelled = (invite: Invite) => {
+  return invite.event.status === "CANCELLED";
+}
+
+const hasLapsed = (invite: Invite) => {
+  const scheduledDate = new Date(invite.event.scheduled_date);
+  const currentDate = new Date();
+
+  return isBefore(scheduledDate, currentDate);
 }
 
 const responseOptions = Object.values(InviteResponse).map((r) => ({
@@ -106,17 +125,23 @@ const EventResponseForm: React.FC<Props> = ({ invite, answer }) => {
     return <ResponseMessage invite={invite} response={parseResponse(response)} />
 
   return (
-    <>
+    <FormContainer>
       <Text css={{ fontSize: 20, fontWeight: 450, marginBottom: 32 }}>
         {`${invite.event.organiser?.first_name}'s ${invite.event.name}`}
       </Text>
+      { isCancelled(invite) && (
+        <Notification type='warning' title='This event has been cancelled' description='You are no longer able to respond to this invite.' />
+      )}
+      { hasLapsed(invite) && (
+        <Notification type='warning' title='This event is in the past' description='You are no longer able to respond to this invite.' />
+      )}
       <Flex css={{gap: 12, flexDirection: 'column'}}>
         <ToggleGroup
           options={responseOptions}
           value={response}
           onChange={(val) => setResponse(val)}
         />
-        <Spacer css={{height: 20}} />
+        <Spacer css={{height: 12}} />
         <Flex>
           <Box css={{width: '100%'}}>
             <Label htmlFor="firstName">First Name</Label>
@@ -136,9 +161,9 @@ const EventResponseForm: React.FC<Props> = ({ invite, answer }) => {
             onChange={(e) => setMessage(e.target.value)}
           />
         </Box>
-        <Button disabled={!valid} onClick={handleSendEventResponse} loading={mutation.isLoading} loadingText="Sending response...">Send</Button>
+        <Button disabled={!valid || isCancelled(invite) || hasLapsed(invite) } onClick={handleSendEventResponse} loading={mutation.isLoading} loadingText="Sending response...">Send</Button>
       </Flex>
-    </>
+    </FormContainer>
   );
 };
 

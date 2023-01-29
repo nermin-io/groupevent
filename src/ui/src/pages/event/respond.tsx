@@ -59,32 +59,21 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
       `attendees/${attendee}/invites/${event}`
     );
 
-    if(response.status === 200) {
-      const invite = response.data as Invite;
-      if(invite.event.status === EventStatus.CANCELLED) return {
-        props: {
-          error: {
-            message: 'This event has been cancelled'
-          }
-        }
-      }
-
+    if (response.status === 200)
       return {
         props: {
           invite: response.data as Invite,
-          answer: answer || null
-        }
-      }
-    }
+          answer: answer || null,
+        },
+      };
 
     return {
       props: {
         error: {
-          message: response.data.message
-        }
-      }
-    }
-
+          message: response.data.message,
+        },
+      },
+    };
   } catch (err) {
     return {
       props: {
