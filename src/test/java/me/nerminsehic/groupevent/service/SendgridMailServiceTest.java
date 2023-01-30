@@ -70,12 +70,13 @@ class SendgridMailServiceTest {
         // given
         Organiser organiser = createTestOrganiser();
         Event event = createTestEvent(organiser);
+        String accessToken = "ACCESS_TOKEN";
 
         given(sendgrid.api(any(Request.class)))
                 .willReturn(new Response());
 
         // when
-        underTest.sendEventConfirmationToOrganiser(event);
+        underTest.sendEventConfirmationToOrganiser(event, accessToken);
 
         // then
         verify(sendgrid).api(any(Request.class));

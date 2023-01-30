@@ -23,6 +23,7 @@ public class EventServiceImpl implements EventService {
     private final AddressService addressService;
     private final AttendeeService attendeeService;
     private final MailService mailService;
+    private final EventAccessTokenService eventAccessTokenService;
     private final Clock clock;
 
     @Override
@@ -59,7 +60,9 @@ public class EventServiceImpl implements EventService {
 
         Event persistedEvent = events.save(newEvent);
         mailService.sendInvitesToAttendees(persistedEvent);
-        mailService.sendEventConfirmationToOrganiser(persistedEvent);
+
+        String accessToken = eventAccessTokenService.createToken(persistedEvent);
+        mailService.sendEventConfirmationToOrganiser(persistedEvent, accessToken);
 
         attendeeService.updateLastInvited(attendees);
         return persistedEvent;

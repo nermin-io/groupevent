@@ -14,6 +14,6 @@ public interface MailService {
 
     void sendRescheduledNoticeToAttendees(Event event);
 
-    void sendEventConfirmationToOrganiser(Event event);
+    void sendEventConfirmationToOrganiser(Event event, String accessToken);
 
 }

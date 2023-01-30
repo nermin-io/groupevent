@@ -2,7 +2,9 @@ package me.nerminsehic.groupevent.service;
 
 import lombok.RequiredArgsConstructor;
 import me.nerminsehic.groupevent.entity.Event;
+import me.nerminsehic.groupevent.entity.Organiser;
 import me.nerminsehic.groupevent.exception.IllegalAccessTokenException;
+import me.nerminsehic.groupevent.repository.Events;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +14,8 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class EventAccessTokenServiceImpl implements EventAccessTokenService {
 
-    private final EventService eventService;
+    private final Events events;
+    private final OrganiserService organiserService;
     private final EncryptionService encryptionService;
     private static final String DELIMITER = "|";
 
@@ -27,7 +30,8 @@ public class EventAccessTokenServiceImpl implements EventAccessTokenService {
         String decryptedValue = encryptionService.decrypt(key);
         Pair<UUID, UUID> result = parseDecryptedValue(decryptedValue);
 
-        return eventService.findById(result.getSecond(), result.getFirst())
+        Organiser organiser = organiserService.getOrganiserById(result.getSecond());
+        return events.findByIdAndOrganiser(result.getFirst(), organiser)
                 .orElseThrow(() -> new IllegalAccessTokenException("Invalid access token"));
 
     }

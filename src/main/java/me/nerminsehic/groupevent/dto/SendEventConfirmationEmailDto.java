@@ -56,7 +56,10 @@ public class SendEventConfirmationEmailDto {
     @JsonProperty("directions_link")
     private String directionsLink;
 
-    public SendEventConfirmationEmailDto(Event event, String mapLink, String directionsLink) {
+    @JsonProperty("access_token")
+    private String accessToken;
+
+    public SendEventConfirmationEmailDto(Event event, String mapLink, String directionsLink, String accessToken) {
         this.eventId = event.getId();
         this.name = event.getName();
         this.descriptionHtml = event.getDescription().replaceAll("(\r\n|\n)", "<br>");
@@ -67,6 +70,7 @@ public class SendEventConfirmationEmailDto {
         this.durationInHours = event.getTimeFrom().until(event.getTimeTo(), ChronoUnit.HOURS);
         this.mapLink = mapLink;
         this.directionsLink = directionsLink;
+        this.accessToken = accessToken;
 
         Address address = event.getAddress();
         this.address = new AddressDto(

@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -46,6 +47,9 @@ class EventServiceImplTest {
     @Mock
     private MailService mailService;
 
+    @Mock
+    private EventAccessTokenService eventAccessTokenService;
+
     @Captor
     private ArgumentCaptor<Set<Attendee>> attendeeArgumentCaptor;
 
@@ -63,6 +67,7 @@ class EventServiceImplTest {
                 addressService,
                 attendeeService,
                 mailService,
+                eventAccessTokenService,
                 clock
         );
     }
@@ -116,6 +121,7 @@ class EventServiceImplTest {
         Address address = createTestAddress(organiser);
         Set<Attendee> attendees = createTestAttendeeSet();
         Event event = createTestEventWithAddressAndAttendees(organiser, address, attendees);
+        String accessToken = "ACCESS_TOKEN";
 
         given(organiserService.getOrganiserById(organiserId))
                 .willReturn(organiser);
@@ -126,6 +132,9 @@ class EventServiceImplTest {
         given(events.save(any(Event.class)))
                 .willReturn(event);
 
+        given(eventAccessTokenService.createToken(event))
+                .willReturn(accessToken);
+
         // when
         Event result = underTest.create(organiserId, event, attendees);
         event.setStatus(EventStatus.PLANNED);
@@ -134,6 +143,7 @@ class EventServiceImplTest {
 
         // then
         ArgumentCaptor<Event> eventArgumentCaptor = ArgumentCaptor.forClass(Event.class);
+        ArgumentCaptor<String> stringArgumentCaptor = ArgumentCaptor.forClass(String.class);
 
         verify(events).save(eventArgumentCaptor.capture());
         assertThat(eventArgumentCaptor.getValue()).isEqualTo(event);
@@ -141,11 +151,12 @@ class EventServiceImplTest {
         verify(mailService).sendInvitesToAttendees(eventArgumentCaptor.capture());
         assertThat(eventArgumentCaptor.getValue()).isEqualTo(event);
 
-        verify(mailService).sendEventConfirmationToOrganiser(eventArgumentCaptor.capture());
+        verify(mailService).sendEventConfirmationToOrganiser(eventArgumentCaptor.capture(), stringArgumentCaptor.capture());
         assertThat(eventArgumentCaptor.getValue()).isEqualTo(event);
 
         verify(attendeeService).updateLastInvited(attendeeArgumentCaptor.capture());
         assertThat(attendeeArgumentCaptor.getValue()).isEqualTo(attendees);
+        assertThat(stringArgumentCaptor.getValue()).isEqualTo(accessToken);
 
         assertThat(result.getStatus()).isEqualTo(EventStatus.PLANNED);
     }
