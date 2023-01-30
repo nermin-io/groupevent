@@ -22,12 +22,12 @@ public class EventAccessTokenServiceImpl implements EventAccessTokenService {
     @Override
     public String createToken(Event event) {
         String value = "%s%s%s".formatted(event.getId(), DELIMITER, event.getOrganiser().getId());
-        return encryptionService.encrypt(value);
+        return encryptionService.encryptString(value);
     }
 
     @Override
     public Event verifyToken(String key) {
-        String decryptedValue = encryptionService.decrypt(key);
+        String decryptedValue = encryptionService.decryptString(key);
         Pair<UUID, UUID> result = parseDecryptedValue(decryptedValue);
 
         Organiser organiser = organiserService.getOrganiserById(result.getSecond());
