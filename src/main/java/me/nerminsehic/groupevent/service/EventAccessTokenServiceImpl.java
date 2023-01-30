@@ -38,9 +38,15 @@ public class EventAccessTokenServiceImpl implements EventAccessTokenService {
 
         String[] values = val.split("\\%s".formatted(DELIMITER));
 
-        UUID eventId = UUID.fromString(values[0]);
-        UUID organiserId = UUID.fromString(values[1]);
+        try {
+            UUID eventId = UUID.fromString(values[0]);
+            UUID organiserId = UUID.fromString(values[1]);
 
-        return Pair.of(eventId, organiserId);
+            return Pair.of(eventId, organiserId);
+        } catch(IllegalArgumentException e) {
+            throw new IllegalAccessTokenException("Could not evaluate UUID");
+        }
+
+
     }
 }
