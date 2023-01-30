@@ -23,6 +23,16 @@ public class HttpExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(IllegalAccessTokenException.class)
+    public ResponseEntity<HttpExceptionResponse> handleIllegalAccessTokenException(IllegalAccessTokenException ex) {
+        HttpExceptionResponse response = new HttpExceptionResponse(
+                ex.getMessage(),
+                HttpStatus.BAD_REQUEST
+        );
+
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
 
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<HttpExceptionResponse> handleNotFoundException(NotFoundException ex) {
