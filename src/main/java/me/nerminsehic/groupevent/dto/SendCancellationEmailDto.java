@@ -40,7 +40,7 @@ public class SendCancellationEmailDto {
                 attendee.getEmailAddress()
         );
         this.organiser = new OrganiserDto(event.getOrganiser());
-        this.cancelMessageHtml = event.getCancelMessage().replaceAll("(\r\n|\n)", "<br>");
+        this.cancelMessageHtml = event.getCancelMessage() != null ? event.getCancelMessage().replaceAll("(\r\n|\n)", "<br>") : null;
         this.eventId = event.getId();
         this.eventName = event.getName();
         this.eventDescriptionHtml = event.getDescription().replaceAll("(\r\n|\n)", "<br>");

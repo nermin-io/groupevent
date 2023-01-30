@@ -40,7 +40,7 @@ public class InviteResponseEmailDto {
         Organiser organiser = event.getOrganiser();
 
         this.response = invite.getResponse();
-        this.messageHtml = invite.getMessage().replaceAll("(\r\n|\n)", "<br>");
+        this.messageHtml = invite.getMessage() != null ? invite.getMessage().replaceAll("(\r\n|\n)", "<br>") : null;
 
         this.attendee = new AttendeeDto(
                 attendee.getId(),
