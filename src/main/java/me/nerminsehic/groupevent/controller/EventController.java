@@ -5,9 +5,12 @@ import me.nerminsehic.groupevent.dto.EventCancelDto;
 import me.nerminsehic.groupevent.dto.EventDto;
 import me.nerminsehic.groupevent.entity.Attendee;
 import me.nerminsehic.groupevent.entity.Event;
+import me.nerminsehic.groupevent.exception.IllegalAccessTokenException;
 import me.nerminsehic.groupevent.exception.NotFoundException;
 import me.nerminsehic.groupevent.service.AttendeeService;
+import me.nerminsehic.groupevent.service.EventAccessTokenService;
 import me.nerminsehic.groupevent.service.EventService;
+import me.nerminsehic.groupevent.util.Encoder;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
@@ -24,6 +27,7 @@ public class EventController {
 
     private final EventService eventService;
     private final AttendeeService attendeeService;
+    private final EventAccessTokenService eventAccessTokenService;
     private final ModelMapper modelMapper;
 
     private Event convertToEntity(EventDto eventDto) {
@@ -93,7 +97,12 @@ public class EventController {
     @CrossOrigin(origins = {"http://localhost:3000", "https://groupevent.co"})
     @PatchMapping("{eventId}/reschedule")
     @ResponseStatus(HttpStatus.OK)
-    public EventDto rescheduleEvent(@PathVariable UUID organiserId, @PathVariable UUID eventId, @Validated @RequestBody EventDto eventDto) {
+    public EventDto rescheduleEvent(@RequestParam String token, @PathVariable UUID organiserId, @PathVariable UUID eventId, @Validated @RequestBody EventDto eventDto) {
+        Event verifiedEvent = eventAccessTokenService.verifyToken(token);
+
+        if(verifiedEvent == null || !verifiedEvent.getId().equals(eventId) || !verifiedEvent.getOrganiser().getId().equals(organiserId))
+            throw new IllegalAccessTokenException("Invalid token");
+
         Event event = convertToEntity(eventDto);
         return convertToDto(eventService.reschedule(organiserId, eventId, event));
     }

@@ -29,7 +29,7 @@ const isValidTimeRange = (time1: Date, time2: Date) => {
   return time1 && time2 && isBefore(time1, time2);
 }
 
-const EventRescheduleForm: React.FC<Props> = ({ event }) => {
+const EventRescheduleForm: React.FC<Props> = ({ event , token}) => {
   const [date, setDate] = useState(new Date(event.scheduled_date));
   const [timeFrom, setTimeFrom] = useState(parseTime(event.time_from));
   const [timeTo, setTimeTo] = useState(parseTime(event.time_to));
@@ -51,6 +51,7 @@ const EventRescheduleForm: React.FC<Props> = ({ event }) => {
     (data: Partial<Event>) => {
       return Proxy.post("/reschedule-event", {
         organiser: event.organiser?.id,
+        token: token,
         event: event.id,
         data: data,
       });
@@ -60,7 +61,6 @@ const EventRescheduleForm: React.FC<Props> = ({ event }) => {
         if(res.status >= 200 && res.status < 300) {
           setRescheduled(true);
         } else {
-          console.log(res);
           setError(res.data.message);
         }
 

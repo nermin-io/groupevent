@@ -46,7 +46,7 @@ export default RescheduleEvent;
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const { token } = query;
-  const decodedToken = decodeURI(`${token}`);
+  const decodedToken = decodeURIComponent(`${token}`);
 
   if (!token)
     return {
