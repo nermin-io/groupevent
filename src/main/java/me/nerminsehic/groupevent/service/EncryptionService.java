@@ -17,7 +17,7 @@ import java.security.spec.InvalidKeySpecException;
 import java.util.Base64;
 
 /**
- * Modified version of <a href="https://github.com/luke-park/SecureCompatibleEncryptionExamples/blob/master/Java/SCEE.java">...</a>
+ * Modified version of <a href="https://github.com/luke-park/SecureCompatibleEncryptionExamples/blob/master/Java/SCEE.java"> this class </a>
  */
 @Service
 public class EncryptionService {

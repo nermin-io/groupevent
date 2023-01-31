@@ -5,6 +5,7 @@ import me.nerminsehic.groupevent.entity.*;
 import me.nerminsehic.groupevent.exception.IllegalOperationException;
 import me.nerminsehic.groupevent.exception.NotFoundException;
 import me.nerminsehic.groupevent.repository.Events;
+import me.nerminsehic.groupevent.util.Encoder;
 import org.springframework.stereotype.Service;
 
 import java.time.Clock;
@@ -62,7 +63,7 @@ public class EventServiceImpl implements EventService {
         mailService.sendInvitesToAttendees(persistedEvent);
 
         String accessToken = eventAccessTokenService.createToken(persistedEvent);
-        mailService.sendEventConfirmationToOrganiser(persistedEvent, accessToken);
+        mailService.sendEventConfirmationToOrganiser(persistedEvent, Encoder.encodeUtf8(accessToken));
 
         attendeeService.updateLastInvited(attendees);
         return persistedEvent;
