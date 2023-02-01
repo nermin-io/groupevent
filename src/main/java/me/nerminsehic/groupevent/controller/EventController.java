@@ -88,7 +88,10 @@ public class EventController {
     @CrossOrigin(origins = {"http://localhost:3000", "https://groupevent.co"})
     @PatchMapping("{eventId}/cancel")
     @ResponseStatus(HttpStatus.OK)
-    public EventDto cancelEvent(@PathVariable UUID organiserId, @PathVariable UUID eventId, @Validated @RequestBody EventCancelDto eventCancelDto) {
+    public EventDto cancelEvent(@RequestParam String token, @PathVariable UUID organiserId, @PathVariable UUID eventId, @Validated @RequestBody EventCancelDto eventCancelDto) {
+        if(!isValidToken(token, eventId, organiserId))
+            throw new IllegalAccessTokenException("Invalid token");
+
         Event cancelledEvent = eventService.cancel(organiserId, eventId, eventCancelDto.getMessage());
 
         return convertToDto(cancelledEvent);
@@ -98,13 +101,17 @@ public class EventController {
     @PatchMapping("{eventId}/reschedule")
     @ResponseStatus(HttpStatus.OK)
     public EventDto rescheduleEvent(@RequestParam String token, @PathVariable UUID organiserId, @PathVariable UUID eventId, @Validated @RequestBody EventDto eventDto) {
-        Event verifiedEvent = eventAccessTokenService.verifyToken(token);
-
-        if(verifiedEvent == null || !verifiedEvent.getId().equals(eventId) || !verifiedEvent.getOrganiser().getId().equals(organiserId))
+        if(!isValidToken(token, eventId, organiserId))
             throw new IllegalAccessTokenException("Invalid token");
 
         Event event = convertToEntity(eventDto);
         return convertToDto(eventService.reschedule(organiserId, eventId, event));
+    }
+
+    private boolean isValidToken(String token, UUID eventId, UUID organiserId) {
+        Event verifiedEvent = eventAccessTokenService.verifyToken(token);
+
+        return verifiedEvent != null && verifiedEvent.getId().equals(eventId) && verifiedEvent.getOrganiser().getId().equals(organiserId);
     }
 
 }

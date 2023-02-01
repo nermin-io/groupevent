@@ -3,17 +3,16 @@ import React from "react";
 import Card from "@/components/Card";
 import Flex from "@/components/Flex";
 import Text from "@/components/Text";
-import Groupevent from "@/clients/groupevent";
 import { Event } from "@/clients/groupevent/types";
-import EventRescheduleForm from "@/containers/EventRescheduleForm";
-import {verifyToken} from "@/helpers";
+import { verifyToken } from "@/helpers";
+import EventCancelForm from "@/containers/EventCancelForm";
 
 interface PageProps {
   event: Event;
   token: string;
   error?: {
     message: string;
-  }
+  };
 }
 
 
@@ -32,18 +31,18 @@ const ErrorMessage: React.FC<ErrorProps> = ({ message }) => {
   );
 };
 
-const RescheduleEvent: NextPage<PageProps> = ({ event, error, token }) => {
+const CancelEvent: NextPage<PageProps> = ({ event, error, token }) => {
   if (error) return <ErrorMessage message={error.message} />;
   return (
     <>
       <Card>
-        <EventRescheduleForm event={event} token={token} />
+        <EventCancelForm event={event} token={token} />
       </Card>
     </>
   );
 };
 
-export default RescheduleEvent;
+export default CancelEvent;
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const { token } = query;
