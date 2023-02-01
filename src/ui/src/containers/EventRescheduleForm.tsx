@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Box from "@/components/Box";
 import Flex from "@/components/Flex";
 import Label from "@/components/Label";
@@ -6,8 +6,8 @@ import Textarea from "@/components/Textarea";
 import Text from "@/components/Text";
 import DatePicker from "@/components/DatePicker";
 import Button from "@/components/Button";
-import { Event } from "@/clients/groupevent/types";
-import { parse, format, isAfter, isBefore } from "date-fns";
+import { Event, EventStatus } from "@/clients/groupevent/types";
+import { format, isAfter, isBefore, parse } from "date-fns";
 import { useMutation } from "react-query";
 import Proxy from "@/clients/proxy";
 import Notification from "@/components/Notification";
@@ -82,6 +82,11 @@ const EventRescheduleForm: React.FC<Props> = ({ event , token}) => {
       <Text css={{ fontSize: 20, fontWeight: 450, marginBottom: 32 }}>
         {event.name}
       </Text>
+      { event.status === EventStatus.CANCELLED && (
+        <Box css={{marginBottom: 20}}>
+          <Notification type='warning' title='This event is cancelled' description='Submission has been disabled.' />
+        </Box>
+      )}
       { rescheduled && (
         <Box css={{marginBottom: 20}}>
           <Notification type='success' title='Successful' description={`${event.name} has successfully been rescheduled.`} />
@@ -134,7 +139,7 @@ const EventRescheduleForm: React.FC<Props> = ({ event , token}) => {
           loading={mutation.isLoading}
           loadingText="Rescheduling.."
           onClick={handleRescheduleEvent}
-          disabled={!valid}
+          disabled={!valid || event.status === EventStatus.CANCELLED}
         >
           Reschedule Event
         </Button>
