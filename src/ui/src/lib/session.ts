@@ -12,6 +12,7 @@ export const sessionOptions: IronSessionOptions = {
     cookieName: 'Groupevent-Session',
     cookieOptions: {
         secure: process.env.NODE_ENV === 'production',
+        maxAge: 86400
     }
 };
 
