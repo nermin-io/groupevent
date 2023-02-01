@@ -9,6 +9,9 @@ export const globalStyles = globalCss({
   },
   body: {
     backgroundColor: "#F9F9F9",
+    '@small': {
+      backgroundColor: 'white'
+    }
   },
   "html, body": {
     padding: 0,
