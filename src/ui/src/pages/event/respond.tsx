@@ -6,6 +6,7 @@ import Groupevent from "@/clients/groupevent";
 import Flex from "@/components/Flex";
 import { EventStatus, Invite } from "@/clients/groupevent/types";
 import EventResponseForm from "@/containers/EventResponseForm";
+import DocumentHead from "@/components/DocumentHead";
 
 interface PageProps {
   error?: {
@@ -22,6 +23,10 @@ interface ErrorProps {
 const ErrorMessage: React.FC<ErrorProps> = ({ message }) => {
   return (
     <Card>
+      <DocumentHead
+        title="Groupevent - Invite Response"
+        description="Groupevent is an event invite platform that allows event organisers to leverage emails for event management."
+      />
       <Flex css={{ gap: 20, flexDirection: "column" }}>
         <Text css={{ fontSize: 28, fontWeight: 500 }}>Error</Text>
         <Text>{message}</Text>
@@ -35,6 +40,10 @@ const EventResponse: NextPage<PageProps> = ({ error, invite, answer }) => {
 
   return (
     <>
+      <DocumentHead
+        title="Groupevent - Invite Response"
+        description="Groupevent is an event invite platform that allows event organisers to leverage emails for event management."
+      />
       <Card>
         <EventResponseForm invite={invite} answer={answer} />
       </Card>

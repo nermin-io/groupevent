@@ -9,6 +9,7 @@ import EventAttendeesForm from "@/containers/EventAttendeesForm";
 import { withIronSessionSsr } from "iron-session/next";
 import { sessionOptions } from "@/lib/session";
 import useAuth from "@/hooks/auth";
+import DocumentHead from "@/components/DocumentHead";
 
 const componentsList = [
   EventNameForm,
@@ -22,6 +23,10 @@ const CreateEvent: NextPage = () => {
 
   return (
     <>
+      <DocumentHead
+        title="Groupevent - Create Event"
+        description="Groupevent is an event invite platform that allows event organisers to leverage emails for event management."
+      />
       <Card>
         <Wizard components={componentsList} />
       </Card>

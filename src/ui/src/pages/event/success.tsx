@@ -9,6 +9,7 @@ import {withIronSessionSsr} from "iron-session/next";
 import { useRouter } from 'next/router';
 import Confetti from 'react-confetti';
 import { useWindowSize } from 'react-use';
+import DocumentHead from "@/components/DocumentHead";
 
 const EventSuccess: NextPage = () => {
   const [isRouting, setIsRouting] = useState(false);
@@ -22,6 +23,10 @@ const EventSuccess: NextPage = () => {
 
   return (
     <>
+      <DocumentHead
+        title="Groupevent - Event Created"
+        description="Groupevent is an event invite platform that allows event organisers to leverage emails for event management."
+      />
       <Confetti width={width} height={height} />
       <Card css={{height: 350}}>
         <Flex css={{ flexDirection: "column", height: '100%', justifyContent: 'space-between' }}>

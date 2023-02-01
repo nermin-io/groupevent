@@ -6,6 +6,7 @@ import Text from "@/components/Text";
 import Groupevent from "@/clients/groupevent";
 import { sessionOptions } from "@/lib/session";
 import {withIronSessionSsr} from "iron-session/next";
+import DocumentHead from "@/components/DocumentHead";
 
 interface PageProps {
   error: {
@@ -16,6 +17,10 @@ interface PageProps {
 const VerifyToken: NextPage<PageProps> = ({ error }) => {
   return (
     <>
+      <DocumentHead
+        title="Groupevent - Verify Login"
+        description="Groupevent is an event invite platform that allows event organisers to leverage emails for event management."
+      />
       <Card>
         <Flex css={{ gap: 20, flexDirection: "column" }}>
           <Text css={{ fontSize: 28, fontWeight: 500 }}>Error</Text>

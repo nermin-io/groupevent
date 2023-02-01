@@ -6,6 +6,7 @@ import { styled } from "@/stitches.config";
 import Box from "@/components/Box";
 import Text from "@/components/Text";
 import Flex from "@/components/Flex";
+import DocumentHead from "@/components/DocumentHead";
 
 const LogoBox = styled(Box, {
   marginBottom: 30,
@@ -14,6 +15,10 @@ const LogoBox = styled(Box, {
 const CheckEmail: NextPage = () => {
   return (
     <>
+      <DocumentHead
+        title="Groupevent - Check your email"
+        description="Groupevent is an event invite platform that allows event organisers to leverage emails for event management."
+      />
       <Card>
         <LogoBox>
           <Logo />
