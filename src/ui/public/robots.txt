@@ -1,0 +1,9 @@
+User-agent: *
+Disallow: /event/
+Disallow: /event/create
+Disallow: /event/cancel
+Disallow: /event/reschedule
+Disallow: /event/respond
+Disallow: /event/success
+Disallow: /verify
+Disallow: /check-email
