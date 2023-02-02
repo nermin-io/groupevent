@@ -40,6 +40,7 @@ public class OrganiserServiceImpl implements OrganiserService {
             throw new UniqueConstraintException(Organiser.class, "email_address", organiser.getEmailAddress());
 
         organiser.setUpdatedAt(Instant.now(clock));
+        organiser.setCreatedAt(Instant.now(clock));
 
         return organisers.save(organiser);
     }
