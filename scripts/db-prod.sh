@@ -1,0 +1,1 @@
+docker run -it --rm postgres:latest psql -h awseb-e-kqgcvufjnb-stack-awsebrdsdatabase-wqdsv0zltock.cz3bqhv5rhtv.ap-southeast-2.rds.amazonaws.com -U nerminsehic -d postgres
