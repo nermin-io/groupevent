@@ -1,0 +1,1 @@
+docker run -it --rm --network=psql_db postgres:latest psql -h psql_db -U postgres
