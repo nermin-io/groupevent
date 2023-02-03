@@ -42,6 +42,7 @@ jobs:
       - uses: actions/setup-java@v3.1.0
         with:
           java-version: ${{ env.JAVA_VERSION }}
+          distribution: corretto
       - name: Maven Build
         run: |
           ./mvnw --no-transfer-progress clean package
