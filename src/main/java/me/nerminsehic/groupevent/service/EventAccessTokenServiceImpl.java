@@ -8,6 +8,8 @@ import me.nerminsehic.groupevent.repository.Events;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -37,20 +39,19 @@ public class EventAccessTokenServiceImpl implements EventAccessTokenService {
     }
 
     private Pair<UUID, UUID> parseDecryptedValue(String val) {
-        if(!val.contains(DELIMITER))
+        if (!val.contains(DELIMITER))
             throw new IllegalAccessTokenException("Invalid access token");
 
-        String[] values = val.split("\\%s".formatted(DELIMITER));
-
+        String[] uuidStringArray = val.split("\\%s".formatted(DELIMITER));
         try {
-            UUID eventId = UUID.fromString(values[0]);
-            UUID organiserId = UUID.fromString(values[1]);
+            List<UUID> uuidList = Arrays.stream(uuidStringArray)
+                    .limit(2)
+                    .map(UUID::fromString)
+                    .toList();
 
-            return Pair.of(eventId, organiserId);
-        } catch(IllegalArgumentException e) {
+            return Pair.of(uuidList.get(0), uuidList.get(1));
+        } catch (IllegalArgumentException e) {
             throw new IllegalAccessTokenException("Could not evaluate UUID");
         }
-
-
     }
 }
