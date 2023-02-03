@@ -15,7 +15,7 @@ import java.util.Optional;
 public class ApiKeyAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
     public ApiKeyAuthenticationFilter(AuthenticationManager authenticationManager) {
-        super("/**");
+        super("/api/**");
         this.setAuthenticationManager(authenticationManager);
     }
 
