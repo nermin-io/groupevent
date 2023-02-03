@@ -1,0 +1,8 @@
+version: "3.8"
+services:
+  web:
+    image: "nsehic/groupevent-api:latest"
+    ports:
+      - "80:8080"
+    restart: "always"
+    env_file: .env
