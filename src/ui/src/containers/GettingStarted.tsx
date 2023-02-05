@@ -88,7 +88,6 @@ const GettingStarted: React.FC<Props> = () => {
         css={{
           justifyContent: "flex-start",
           alignItems: "center",
-          marginTop: 35,
         }}
       >
         <Checkbox
