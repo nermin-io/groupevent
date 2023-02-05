@@ -75,6 +75,7 @@ public class OrganiserServiceImpl implements OrganiserService {
                 .map(o -> Pair.of(o, false))
                 .orElseGet(() -> {
                     organiser.setUpdatedAt(Instant.now(clock));
+                    organiser.setCreatedAt(Instant.now(clock));
                     return Pair.of(organisers.save(organiser), true);
                 });
     }
