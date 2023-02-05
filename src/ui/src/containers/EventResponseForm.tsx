@@ -197,9 +197,6 @@ const EventResponseForm: React.FC<Props> = ({ invite, answer }) => {
             id="message"
             value={message}
             autocomplete="off"
-            autocorrect="off"
-            autocapitalize="off"
-            spellcheck="false"
             onChange={(e) => setMessage(e.target.value)}
           />
         </Box>

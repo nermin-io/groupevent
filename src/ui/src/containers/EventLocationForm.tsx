@@ -77,10 +77,6 @@ const EventLocationForm: React.FC<Props> = () => {
           <Textarea
             placeholder="Parking restrictions, entry details, etc."
             id="notes"
-            autocomplete="off"
-            autocorrect="off"
-            autocapitalize="off"
-            spellcheck="false"
             value={state.notes}
             onChange={(e) => setField("notes", e.target.value)}
           />

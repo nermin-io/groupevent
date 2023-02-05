@@ -66,18 +66,12 @@ const GettingStarted: React.FC<Props> = () => {
           placeholder="First Name"
           value={firstName}
           autocomplete="off"
-          autocorrect="off"
-          autocapitalize="off"
-          spellcheck="false"
           onChange={(e) => setFirstName(e.target.value)}
         />
         <Input
           placeholder="Last Name"
           value={lastName}
           autocomplete="off"
-          autocorrect="off"
-          autocapitalize="off"
-          spellcheck="false"
           onChange={(e) => setLastName(e.target.value)}
         />
       </Flex>

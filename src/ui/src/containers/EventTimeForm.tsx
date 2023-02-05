@@ -58,9 +58,6 @@ const EventTimeForm: React.FC<Props> = () => {
             placeholder="Provide a rough agenda for your event."
             id="agenda"
             autocomplete="off"
-            autocorrect="off"
-            autocapitalize="off"
-            spellcheck="false"
             value={state.agenda}
             onChange={(e) => setField("agenda", e.target.value)}
           />

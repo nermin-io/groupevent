@@ -37,9 +37,6 @@ const EventNameForm: React.FC<Props> = () => {
             placeholder="I'm throwing a birthday party..."
             id="description"
             autocomplete="off"
-            autocorrect="off"
-            autocapitalize="off"
-            spellcheck="false"
             value={state.description}
             onChange={(e) => setField("description", e.target.value)}
           />
