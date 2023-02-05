@@ -8,7 +8,7 @@ import Box from "@/components/Box";
 import { useMutation } from "react-query";
 import { Organiser } from "@/clients/groupevent/types";
 import Proxy from "@/clients/proxy";
-import { useRouter } from 'next/router';
+import { useRouter } from "next/router";
 
 interface Props {}
 
@@ -39,7 +39,9 @@ const GettingStarted: React.FC<Props> = () => {
       return Proxy.post("/links", organiser);
     },
     {
-      onSuccess: async (res) => { await router.push('/check-email'); },
+      onSuccess: async (res) => {
+        await router.push("/check-email");
+      },
     }
   );
 
@@ -57,30 +59,35 @@ const GettingStarted: React.FC<Props> = () => {
     <>
       <Text css={{ lineHeight: 1.375, fontWeight: 450, marginBottom: 25 }}>
         Easily invite friends to your event. <br />
-        No signup, no marketing, no bs.
+        No signup, no marketing.
       </Text>
       <Flex>
         <Input
           placeholder="First Name"
           value={firstName}
+          autocomplete="off"
           onChange={(e) => setFirstName(e.target.value)}
         />
         <Input
           placeholder="Last Name"
           value={lastName}
+          autocomplete="off"
           onChange={(e) => setLastName(e.target.value)}
         />
       </Flex>
       <Input
         placeholder="Email Address"
         value={email}
+        autocomplete="off"
+        autocorrect="off"
+        autocapitalize="off"
+        spellcheck="false"
         onChange={(e) => setEmail(e.target.value)}
       />
       <Flex
         css={{
           justifyContent: "flex-start",
           alignItems: "center",
-          marginTop: 35,
         }}
       >
         <Checkbox

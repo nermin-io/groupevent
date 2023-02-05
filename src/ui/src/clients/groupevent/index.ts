@@ -6,7 +6,7 @@ export const PRODUCTION_URL = `${process.env.PROD_GROUPEVENT_API_BASE_URL}/api/v
 const Groupevent = axios.create({
   baseURL:
     process.env.NODE_ENV === "development" ? DEVELOPMENT_URL : PRODUCTION_URL,
-  timeout: 15000,
+  timeout: 20000,
   headers: { "X-API-KEY": `${process.env.GROUPEVENT_API_KEY}` },
   validateStatus: function (status) {
     return status < 500;

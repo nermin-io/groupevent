@@ -22,7 +22,7 @@ const EventTimeForm: React.FC<Props> = () => {
           <Label htmlFor="date">Date</Label>
           <DatePicker
             selected={state.date}
-            onChange={(date: Date) => setField('date', date)}
+            onChange={(date: Date) => setField("date", date)}
             id="date"
           />
         </Box>
@@ -31,7 +31,10 @@ const EventTimeForm: React.FC<Props> = () => {
             <Label htmlFor="fromTime">From</Label>
             <DatePicker
               selected={state.timeFrom}
-              onChange={(date: Date) => { console.log(date); setField('timeFrom', date);}}
+              onChange={(date: Date) => {
+                console.log(date);
+                setField("timeFrom", date);
+              }}
               type="time"
               id="fromTime"
             />
@@ -40,7 +43,10 @@ const EventTimeForm: React.FC<Props> = () => {
             <Label htmlFor="toTime">To</Label>
             <DatePicker
               selected={state.timeTo}
-              onChange={(date: Date) => {console.log(date); setField('timeTo', date);}}
+              onChange={(date: Date) => {
+                console.log(date);
+                setField("timeTo", date);
+              }}
               type="time"
               id="toTime"
             />
@@ -51,8 +57,9 @@ const EventTimeForm: React.FC<Props> = () => {
           <Textarea
             placeholder="Provide a rough agenda for your event."
             id="agenda"
+            autocomplete="off"
             value={state.agenda}
-            onChange={(e) => setField('agenda', e.target.value)}
+            onChange={(e) => setField("agenda", e.target.value)}
           />
         </Box>
       </Flex>

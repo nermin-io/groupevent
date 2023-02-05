@@ -7,6 +7,12 @@ const Card = styled(Box, {
   borderRadius: 6,
   padding: 30,
   boxShadow: "0 2px 12px rgba(0,0,0,.1)",
+  '@small': {
+    display: 'flex',
+    flexDirection: 'column',
+    height: '100vh',
+    boxShadow: "none",
+  }
 });
 
 export default Card;
