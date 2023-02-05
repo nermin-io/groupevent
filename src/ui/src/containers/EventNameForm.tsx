@@ -21,11 +21,8 @@ const EventNameForm: React.FC<Props> = () => {
         <Box>
           <Label htmlFor="eventName">Event Name</Label>
           <Input
-            placeholder="26th Birthday"
-            autocomplete="off"
             autocorrect="off"
-            autocapitalize="off"
-            spellcheck="false"
+            autocapitalize="words"
             id="eventName"
             value={state.name}
             onChange={(e) => setField("name", e.target.value)}

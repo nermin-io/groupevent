@@ -22,6 +22,7 @@ const EventLocationForm: React.FC<Props> = () => {
           <Label htmlFor="streetAddress">Street Address</Label>
           <Input
             autocorrect="off"
+            autocapitalize="words"
             placeholder="123 Lonsdale St"
             id="streetAddress"
             value={state.address}
@@ -33,6 +34,7 @@ const EventLocationForm: React.FC<Props> = () => {
             <Label htmlFor="city">City</Label>
             <Input
               autocorrect="off"
+              autocapitalize="words"
               placeholder="Melbourne"
               id="city"
               value={state.city}
@@ -43,6 +45,7 @@ const EventLocationForm: React.FC<Props> = () => {
             <Label htmlFor="state">State</Label>
             <Input
               autocorrect="off"
+              autocapitalize="characters"
               placeholder="VIC"
               id="state"
               value={state.state}
