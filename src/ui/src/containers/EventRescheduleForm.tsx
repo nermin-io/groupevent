@@ -131,6 +131,7 @@ const EventRescheduleForm: React.FC<Props> = ({ event , token}) => {
           <Textarea
             placeholder="Provide a rough agenda for your event."
             id="agenda"
+            autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
             value={agenda}
             onChange={(e) => setAgenda(e.target.value)}
           />

@@ -20,15 +20,28 @@ const EventNameForm: React.FC<Props> = () => {
       <Flex css={{ flexDirection: "column" }}>
         <Box>
           <Label htmlFor="eventName">Event Name</Label>
-          <Input placeholder="26th Birthday" id="eventName" value={state.name} onChange={e => setField('name', e.target.value)} />
+          <Input
+            placeholder="26th Birthday"
+            autocomplete="off"
+            autocorrect="off"
+            autocapitalize="off"
+            spellcheck="false"
+            id="eventName"
+            value={state.name}
+            onChange={(e) => setField("name", e.target.value)}
+          />
         </Box>
         <Box>
           <Label htmlFor="description">Description</Label>
           <Textarea
             placeholder="I'm throwing a birthday party..."
             id="description"
+            autocomplete="off"
+            autocorrect="off"
+            autocapitalize="off"
+            spellcheck="false"
             value={state.description}
-            onChange={e => setField('description', e.target.value)}
+            onChange={(e) => setField("description", e.target.value)}
           />
         </Box>
       </Flex>
