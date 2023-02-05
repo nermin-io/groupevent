@@ -21,10 +21,7 @@ const EventLocationForm: React.FC<Props> = () => {
         <Box>
           <Label htmlFor="streetAddress">Street Address</Label>
           <Input
-            autocomplete="off"
             autocorrect="off"
-            autocapitalize="off"
-            spellcheck="false"
             placeholder="123 Lonsdale St"
             id="streetAddress"
             value={state.address}
@@ -35,10 +32,7 @@ const EventLocationForm: React.FC<Props> = () => {
           <Box>
             <Label htmlFor="city">City</Label>
             <Input
-              autocomplete="off"
               autocorrect="off"
-              autocapitalize="off"
-              spellcheck="false"
               placeholder="Melbourne"
               id="city"
               value={state.city}
@@ -48,23 +42,17 @@ const EventLocationForm: React.FC<Props> = () => {
           <Box>
             <Label htmlFor="state">State</Label>
             <Input
-              autocomplete="off"
               autocorrect="off"
-              autocapitalize="off"
-              spellcheck="false"
               placeholder="VIC"
               id="state"
               value={state.state}
-              onChange={(e) => setField("state", e.target.value)}
+              onChange={(e) => setField("state", e.target.value.toUpperCase())}
             />
           </Box>
           <Box>
             <Label htmlFor="postCode">Post Code</Label>
             <Input
-              autocomplete="off"
               autocorrect="off"
-              autocapitalize="off"
-              spellcheck="false"
               placeholder="3000"
               id="postCode"
               value={state.postCode}
