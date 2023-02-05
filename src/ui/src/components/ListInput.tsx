@@ -98,6 +98,10 @@ const ListInput: React.FC<Props> = ({ values, onNewValue, onRemoveValue }) => {
         ))}
       </ListContainer>
       <Textarea
+        autocomplete="off"
+        autocorrect="off"
+        autocapitalize="off"
+        spellcheck="false"
         value={text}
         onChange={handleTextChange}
         css={{ border: 0, padding: 0, "&:focus-within": { boxShadow: `none` } }}
