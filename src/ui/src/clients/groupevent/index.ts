@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const DEVELOPMENT_URL = "http://localhost:8080/api/v1";
-export const PRODUCTION_URL = "https://api.groupevent.co/api/v1";
+export const PRODUCTION_URL = `${process.env.PROD_GROUPEVENT_API_BASE_URL}/api/v1`;
 
 const Groupevent = axios.create({
   baseURL:
