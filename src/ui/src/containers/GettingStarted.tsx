@@ -59,7 +59,7 @@ const GettingStarted: React.FC<Props> = () => {
     <>
       <Text css={{ lineHeight: 1.375, fontWeight: 450, marginBottom: 25 }}>
         Easily invite friends to your event. <br />
-        No signup, no marketing, no bs.
+        No signup, no marketing.
       </Text>
       <Flex>
         <Input
