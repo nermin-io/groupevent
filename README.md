@@ -43,7 +43,7 @@ Running as a Docker container on AWS Elastic Beanstalk.
 Navigation to [Groupevent](https://groupevent.co) and follow the wizard instructions
 
 ## Contribute
-Have a look through existing [Issues](https://github.com/nsehic/groupevent/issues) and [Pull Requests](https://github.com/httpie/httpie/pulls) that you could help with. 
+Have a look through existing [Issues](https://github.com/nsehic/groupevent/issues) and [Pull Requests](https://github.com/nsehic/groupevent/pulls) that you could help with. 
 If you'd like to request a feature or report a bug, please [create a GitHub Issue](https://github.com/nsehic/groupevent/issues) using one of the templates provided.
 
 ## License
